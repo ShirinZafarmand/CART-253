@@ -1,13 +1,13 @@
 /**************************************************
-Template p5 project
-Pippin Barr
+Activity Number 2: Drawing an Alien
+Shirin Zafarmand
 
-Here is a description of this template p5 project.
+Drawing an Alien on The Canvas.
 **************************************************/
 
 // setup()
 //
-// Description of setup() goes here.
+// Drew an Alien:
 function setup() {
 
 //Expanded Canvas
@@ -53,7 +53,7 @@ arc(320,250,35,28,0,3.14159)
 
 // draw()
 //
-// Description of draw() goes here.
+// Does Nothing.
 function draw() {
 
 }
