@@ -5,12 +5,13 @@ Pippin Barr
 Here is a description of this template p5 project.
 **************************************************/
 
+
 //Setting variables
-let covid={
-  x:0,  y:250,  size:100,  vx:0,  vy:0, ax:0, ay:0, speed:0.2,  fill:{ r:255, g:0, b:0}};
+let covidEmoji={
+  x:0, y:250, size:200, vx:0, vy:0, ax:0, ay:0, speed:0.1,  fill:{ r:255, g:0, b:0}, image:undefined}
 
 let victim={
-  x:0, y:0, size:70, fill:{r:0, g:255, b:0 }};
+  x:0, y:0, size:70, fill:{r:255, g:255, b:255 }};
 
 let bg={
   r:0, g:0, b:0}
@@ -26,13 +27,19 @@ let floatingCovid3={
 
 
 
+function preload(){
+  covidEmoji.image=loadImage("assets/images/covid3.png")}
+
+
+
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
 
-  covid.y=random(0,height);
-  covid.vx=covid.speed;
+  covidEmoji.y=random(0,height);
+  covidEmoji.vx=covidEmoji.speed;
   }
+
 
 
 
@@ -41,32 +48,34 @@ function draw() {
 
 
   //covid chase path
-  covid.x=covid.x+covid.vx;
-  covid.y=covid.y+covid.vy;
+  covidEmoji.x=covidEmoji.x+covidEmoji.vx;
+  covidEmoji.y=covidEmoji.y+covidEmoji.vy;
 
-  covid.vy=covid.vy+covid.ay
-  covid.vx=covid.vx+covid.ax
+  covidEmoji.vy=covidEmoji.vy+covidEmoji.ay
+  covidEmoji.vx=covidEmoji.vx+covidEmoji.ax
 
-  if(mouseX < covid.x){
-    covid.ax=-covid.speed}
+  if(mouseX < covidEmoji.x){
+    covidEmoji.ax=-covidEmoji.speed}
 
-  else{covid.ax=covid.speed}
+  else{covidEmoji.ax=covidEmoji.speed}
 
-  if(mouseY < covid.y){
-    covid.ay=-covid.speed}
+  if(mouseY < covidEmoji.y){
+    covidEmoji.ay=-covidEmoji.speed}
 
-  else{covid.ay=covid.speed}
+  else{covidEmoji.ay=covidEmoji.speed}
 
 
 
   //covid display
-  fill(covid.fill.r,covid.fill.g,covid.fill.b);
-  ellipse(covid.x,covid.y,covid.size);
+  fill(covidEmoji.fill.r,covidEmoji.fill.g,covidEmoji.fill.b);
 
-  if(covid.x>width){
-    covid.x=0
-    covid.y=random(0,height);}
 
+  if(covidEmoji.x>width){
+    covidEmoji.x=0
+    covidEmoji.y=random(0,height);}
+
+ imageMode(CENTER)
+ image(covidEmoji.image,covidEmoji.x,covidEmoji.y,covidEmoji.size,covidEmoji.size)
 
 
   //floating covids
@@ -112,9 +121,9 @@ function draw() {
 
 
   //interaction between covid and victim
-  let d =dist(covid.x,covid.y,victim.x,victim.y)
+  let d =dist(covidEmoji.x,covidEmoji.y,victim.x,victim.y)
 
-  if(d<covid.size/2 + victim.size/2){
+  if(d<covidEmoji.size/2.5 + victim.size/2){
   noLoop()}
 }
 
