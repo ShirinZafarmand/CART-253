@@ -70,7 +70,6 @@ function setup() {
 
 
 function draw() {
-
   background(bg.r,bg.g,bg.b)
 
 
@@ -113,7 +112,7 @@ function draw() {
 
      ellipse(floatingCovid.x,floatingCovid.y,floatingCovid.size)
 
-      floatingCovid.size=floatingCovid.size + floatingCovid.expansion
+     floatingCovid.size=floatingCovid.size + floatingCovid.expansion
 
   //ones on the right side of screen
      floatingCovid2.x=random(3*windowWidth/4,windowWidth)
