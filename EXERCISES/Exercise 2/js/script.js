@@ -1,29 +1,33 @@
 /**************************************************
-Template p5 project
-Pippin Barr
+Exercise 2-Dodging covid 19
+Shirin Zafarmand
 
-Here is a description of this template p5 project.
+A game in which the victim must avoid interaction between the virus which follows, and floating covid19s on the screen that get bigger by time
+unless the user sanatizes them by clicking on the keyboard.
 **************************************************/
 
 
 //Setting variables
 let covidEmoji={
-  x:0, y:250, size:200, vx:0, vy:0, ax:0, ay:0, speed:0.1,  fill:{ r:255, g:0, b:0}, image:undefined}
+  x:0, y:250, size:200, vx:0, vy:0, ax:0, ay:0, speed:0.4,  fill:{ r:255, g:0, b:0}, image:undefined};
 
 let victim={
   x:0, y:0, size:70, fill:{r:255, g:255, b:255 }};
 
 let bg={
-  r:0, g:0, b:0}
+  r:0, g:0, b:0};
 
 let floatingCovid={
-  x:400, y:550, size:7 , expansion:0.5, strech:0, fill:{r:255, g:0, b:0}}
+  x:400, y:550, size:7 , expansion:0.9, fill:{r:255, g:0, b:0}};
 
 let floatingCovid2={
-  x:1800, y:550, size:7 , expansion:0.5, strech:0, fill:{r:255, g:0, b:0}}
+  x:1800, y:550, size:7 , expansion:0.9, fill:{r:255, g:0, b:0}};
 
 let floatingCovid3={
-  x:1100, y:550, size:7 , expansion:0.5, strech:0, fill:{r:255, g:0, b:0}}
+  x:1100, y:550, size:7 , expansion:0.9, fill:{r:255, g:0, b:0}};
+
+let titration={
+  x:0,y:500,size1:100,size2:0,expansion:50};
 
 
 
@@ -36,9 +40,7 @@ function preload(){
 function setup() {
   createCanvas(windowWidth,windowHeight);
 
-  covidEmoji.y=random(0,height);
-  covidEmoji.vx=covidEmoji.speed;
-  }
+  covidEmoji.vx=covidEmoji.speed;}
 
 
 
@@ -47,7 +49,7 @@ function draw() {
   background(bg.r,bg.g,bg.b)
 
 
-  //covid chase path
+  //covid emoji chase path
   covidEmoji.x=covidEmoji.x+covidEmoji.vx;
   covidEmoji.y=covidEmoji.y+covidEmoji.vy;
 
@@ -66,7 +68,7 @@ function draw() {
 
 
 
-  //covid display
+  //covid emoji display
   fill(covidEmoji.fill.r,covidEmoji.fill.g,covidEmoji.fill.b);
 
 
@@ -74,35 +76,39 @@ function draw() {
     covidEmoji.x=0
     covidEmoji.y=random(0,height);}
 
- imageMode(CENTER)
- image(covidEmoji.image,covidEmoji.x,covidEmoji.y,covidEmoji.size,covidEmoji.size)
+  imageMode(CENTER)
+  image(covidEmoji.image,covidEmoji.x,covidEmoji.y,covidEmoji.size,covidEmoji.size)
 
 
   //floating covids
-  //one on the left side of screen
-    fill(floatingCovid.fill.r,floatingCovid.fill.g,floatingCovid.fill.b)
+  //ones on the left side of screen
+     floatingCovid.x=random(0,windowWidth/4)
+     floatingCovid.y=random(windowHeight/4,3*windowHeight/4)
+     fill(floatingCovid.fill.r,floatingCovid.fill.g,floatingCovid.fill.b)
 
-    ellipse(floatingCovid.x,floatingCovid.y,floatingCovid.size)
+     ellipse(floatingCovid.x,floatingCovid.y,floatingCovid.size)
 
-    floatingCovid.size=floatingCovid.size + floatingCovid.expansion
+      floatingCovid.size=floatingCovid.size + floatingCovid.expansion
 
-  //one on the right side of screen
-    fill(floatingCovid2.fill.r,floatingCovid2.fill.g,floatingCovid2.fill.b)
+  //ones on the right side of screen
+     floatingCovid2.x=random(3*windowWidth/4,windowWidth)
+     floatingCovid2.y=random(windowHeight/4,3*windowHeight/4)
+     fill(floatingCovid2.fill.r,floatingCovid2.fill.g,floatingCovid2.fill.b)
 
-    ellipse(floatingCovid2.x,floatingCovid2.y,floatingCovid2.size)
+     ellipse(floatingCovid2.x,floatingCovid2.y,floatingCovid2.size)
 
-    floatingCovid2.size=floatingCovid2.size + floatingCovid2.expansion
+     floatingCovid2.size=floatingCovid2.size + floatingCovid2.expansion
 
   //one in the middle
-    fill(floatingCovid3.fill.r,floatingCovid3.fill.g,floatingCovid3.fill.b)
+     fill(floatingCovid3.fill.r,floatingCovid3.fill.g,floatingCovid3.fill.b)
 
-    ellipse(floatingCovid3.x,floatingCovid3.y,floatingCovid3.size)
+     ellipse(floatingCovid3.x,floatingCovid3.y,floatingCovid3.size)
 
-    floatingCovid3.size=floatingCovid3.size + floatingCovid3.expansion
+     floatingCovid3.size=floatingCovid3.size + floatingCovid3.expansion
 
 
 
-  //victim
+  //victim(users mouse)
   victim.x=mouseX;
   victim.y=mouseY;
 
@@ -111,7 +117,7 @@ function draw() {
 
 
 
-  //interaction between the floatingCovids and victim
+  //interaction between the floatingCovids and victim(users mouse)
   let d2 =dist(floatingCovid.x,floatingCovid.y,victim.x,victim.y)
   let d3 =dist(floatingCovid2.x,floatingCovid2.y,victim.x,victim.y)
   let d4 =dist(floatingCovid3.x,floatingCovid3.y,victim.x,victim.y)
@@ -120,7 +126,7 @@ function draw() {
 
 
 
-  //interaction between covid and victim
+  //interaction between covid emoji and victim
   let d =dist(covidEmoji.x,covidEmoji.y,victim.x,victim.y)
 
   if(d<covidEmoji.size/2.5 + victim.size/2){
