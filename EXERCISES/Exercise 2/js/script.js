@@ -9,25 +9,49 @@ unless the user sanatizes them by clicking on the keyboard.
 
 //Setting variables
 let covidEmoji={
-  x:0, y:250, size:200, vx:0, vy:0, ax:0, ay:0, speed:0.4,  fill:{ r:255, g:0, b:0}, image:undefined};
+  x:0,
+  y:250,
+  size:200,
+  vx:0,
+  vy:0,
+  ax:0,
+  ay:0,
+  speed:0.4,
+  fill:{ r:255, g:0, b:0},
+  image:undefined};
 
 let victim={
-  x:0, y:0, size:70, fill:{r:255, g:255, b:255 }};
+  x:0,
+  y:0,
+  size:70,
+  fill:{r:255, g:255, b:255 }};
 
 let bg={
-  r:0, g:0, b:0};
+  r:255,
+  g:255,
+  b:255};
 
 let floatingCovid={
-  x:400, y:550, size:7 , expansion:0.9, fill:{r:255, g:0, b:0}};
+  x:400,
+  y:550,
+  size:7 ,
+  expansion:0.9,
+  fill:{r:0, g:255, b:0}};
 
 let floatingCovid2={
-  x:1800, y:550, size:7 , expansion:0.9, fill:{r:255, g:0, b:0}};
+  x:1800,
+  y:550,
+  size:7 ,
+  expansion:0.9,
+  fill:{r:0, g:255, b:0}};
 
 let floatingCovid3={
-  x:1100, y:550, size:7 , expansion:0.9, fill:{r:255, g:0, b:0}};
+  x:1100,
+  y:550,
+  size:7 ,
+  expansion:0.9,
+  fill:{r:0, g:255, b:0}};
 
-let titration={
-  x:0,y:500,size1:100,size2:0,expansion:50};
 
 
 
@@ -46,6 +70,7 @@ function setup() {
 
 
 function draw() {
+
   background(bg.r,bg.g,bg.b)
 
 
@@ -122,7 +147,11 @@ function draw() {
   let d3 =dist(floatingCovid2.x,floatingCovid2.y,victim.x,victim.y)
   let d4 =dist(floatingCovid3.x,floatingCovid3.y,victim.x,victim.y)
   if(d2<floatingCovid.size/2 + victim.size/2 || d3<floatingCovid2.size/2 + victim.size/2 || d4<floatingCovid3.size/2 + victim.size/2){
-    noLoop()}
+ bg.r=255
+ bg.b=0
+ bg.g=0}
+
+ else(bg.r=0,bg.b=0,bg.g=0)
 
 
 
