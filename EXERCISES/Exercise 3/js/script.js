@@ -9,9 +9,20 @@ Shirin Zafarmand
 let loveSeeker={
   x:1100,
   y:550,
-  size:90,
+  size:50,
   fill:{ r:127, g:127, b:127},
   };
+
+let arrow={
+  x:0,
+  y:0,
+  width:10,
+  height:80,
+  angle:0,
+  rotation:0,
+  fill:255,
+  expansion:0,
+  reduction:0}
 
 let lover1={
   x:400,
@@ -28,7 +39,7 @@ let lover2={
   angle:0};
 
 let lover3={
-  x:700,
+  x:250,
   y:50,
   size:70,
   fill:{r:209, g:119, b:175},
@@ -41,14 +52,16 @@ let lover4={
   fill:{r:209, g:119, b:175},
   angle:0};
 
-  let bg={
-    r:0,
-    g:0,
-    b:0};
+
+let bg={
+  r:0,
+  g:0,
+  b:0};
+
+let acceptableDifference=0
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
-
 }
 
 
@@ -63,13 +76,42 @@ function draw() {
   ellipse(loveSeeker.x,loveSeeker.y,loveSeeker.size)
 
 
-  //orbits
-    noFill()
-    stroke(255)
-    ellipse(1100,550,2100)
-    ellipse(1100,550,1450)
-    ellipse(1100,550,1040)
-    ellipse(1100,550,880)
+//aiming a lover
+if (keyIsDown(37)){
+  arrow.rotation=0.1
+  arrow.angle=arrow.angle+arrow.rotation}
+else if(keyIsDown(39)){
+  arrow.rotation=-0.1
+  arrow.angle=arrow.angle+arrow.rotation}
+
+
+//arrow
+  push()
+  translate(1100,550)
+  rotate(arrow.angle)
+  fill(255)
+  rect(arrow.x,arrow.y,arrow.width,arrow.height)
+  pop()
+
+
+//shooting the arrow
+  arrow.height=arrow.height+arrow.expansion
+  if(arrow.height>510){
+   noLoop()}
+
+//if the seeker gets lucky the Cupid arrow meets the love of his/her life
+let d1= dist(lover1.x,lover1.y,arrow.x,arrow.y)
+if(d1< lover1.size/2 +arrow.height && arrow.angle===lover1.angle){
+bg.r=200
+}
+
+
+//orbits
+  noFill()
+  stroke(255)
+  ellipse(1100,550,600)
+  ellipse(1100,550,870)
+  ellipse(1100,550,1030)
 
 
 //lover 1 display
@@ -89,13 +131,12 @@ function draw() {
 
 //lover 3 display
   rotate(lover3.angle)
-  rect(lover3.x,lover3.y,lover3.size,lover3.size)
-  lover3.angle=lover3.angle+0.017
+  rect(lover3.x,lover3.y,lover3.size)
+  lover3.angle=lover3.angle+0.01
+  pop()}
 
 
-//lover 4 display
-  rotate(lover4.angle)
-  rect(lover4.x,lover4.y,lover4.size,lover4.size)
-  lover4.angle=lover4.angle+0.001
-  pop()
-}
+//shooting the arrow completory
+  function keyPressed(){
+    if (keyCode===38){
+    arrow.expansion=50}}
