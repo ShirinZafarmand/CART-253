@@ -2,6 +2,8 @@
 Exercise 3- looking For Love
 Shirin Zafarmand
 
+A gaMe in which the user decides the direction of arrow(by left and right arrow) when the user decides to shoot the arrow presses the up arrow.
+if it touches one the lovers(rectangles) the game ends if not try again. maybe next time you're lucky!
 **************************************************/
 
 
@@ -50,7 +52,23 @@ let bg={
   g:0,
   b:0};
 
+let orbit1={
+  x:1100,
+  y:550,
+  size:600}
+
+let orbit2={
+  x:1100,
+  y:550,
+  size:870}
+
+let orbit3={
+  x:1100,
+  y:550,
+  size:1030}
+
 let acceptableDifference=10
+
 let state ='title'
 
 
@@ -68,10 +86,10 @@ function draw() {
 //screen title
 if(state==='title'){
   fill(255)
-  text('love is shooting a shot in the dark',width/2,height/2)}
+  text('Love is shooting a shot in the dark. Are you feeling lucky today? Right click to start!',width/2,height/2)}
 else if(state==='start!'){
 
-  // a blue sad circle love seeker in the middle of screen looking for love
+  // a blue sad circle in the middle of screen looking for love
 loveSeekerDisplay()
 
   //arrow
@@ -86,7 +104,7 @@ shootingArrow()
 
 
   //if the seeker gets lucky the Cupid arrow meets the love of his/her life
-arrowLoverEncounter()  
+arrowLoverEncounter()
 
 
   //orbits
@@ -154,9 +172,9 @@ function shootingArrow(){
 function orbits(){
   noFill()
   stroke(255)
-  ellipse(1100,550,600)
-  ellipse(1100,550,870)
-  ellipse(1100,550,1030)}
+  ellipse(orbit1.x,orbit1.y,orbit1.size)
+  ellipse(orbit2.x,orbit2.y,orbit2.size)
+  ellipse(orbit3.x,orbit3.y,orbit3.size)}
 
 function arrowLoverEncounter(){
   let d1= dist(lover1.x,lover1.y,arrow.x,arrow.y)
