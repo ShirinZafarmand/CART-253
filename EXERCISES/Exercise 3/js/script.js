@@ -103,10 +103,6 @@ aimingArrow()
 shootingArrow()
 
 
-  //if the seeker gets lucky the Cupid arrow meets the love of his/her life
-arrowLoverEncounter()
-
-
   //orbits
 orbits()
 
@@ -176,16 +172,6 @@ function orbits(){
   ellipse(orbit2.x,orbit2.y,orbit2.size)
   ellipse(orbit3.x,orbit3.y,orbit3.size)}
 
-function arrowLoverEncounter(){
-  let d1= dist(lover1.x,lover1.y,arrow.x,arrow.y)
-  if(d1< lover1.size/2 +arrow.height && arrow.angle<lover1.angle+acceptableDifference){
-    bg.r=200}
-  let d2= dist(lover2.x,lover2.y,arrow.x,arrow.y)
-  if(d2< lover2.size/2 +arrow.height && arrow.angle<lover2.angle+acceptableDifference){
-    bg.r=200}
-  let d3= dist(lover3.x,lover3.y,arrow.x,arrow.y)
-  if(d3< lover3.size/2 +arrow.height && arrow.angle<lover3.angle+acceptableDifference){
-    bg.r=200}}
 
 
 //click to start the game
