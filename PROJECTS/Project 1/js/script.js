@@ -31,34 +31,54 @@ let border2={
 };
 
 let user={
-  x:600,
-  y:600,
+  x:1000,
+  y:900,
   size:98,
 };
+
+let life={
+  x:0,
+  y:0,
+  size:40,
+  size2:0,
+  fill:{
+    r:100,
+    g:0,
+    b:0}
+}
 
 let troublesome1={
   size1:100,
   size2:0,
-  expansion:5,
+  expansion:50,
 };
 
 let troublesome2={
   size1:110,
   size2:0,
-  expansion:5,
+  expansion:50,
 };
 
 let troublesome3={
   size1:0,
   size2:110,
-  expansion:5,
+  expansion:50,
 };
 
 let troublesome4={
   size1:0,
   size2:100,
-  expansion:5,
+  expansion:50,
 };
+
+let lifeGoals={
+  x:600,
+  y:500,
+  size:100,
+  alpha:0
+}
+
+let lifeLimit=1500;
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
@@ -73,7 +93,7 @@ function draw() {
 
 
 //troublesome 1
-  fill(255)
+  fill(117, 117, 117)
   rect(windowWidth/4,0,troublesome1.size1,troublesome1.size2);
   troublesome1.size2 = troublesome1.size2 + troublesome1.expansion;
   if (troublesome1.size2>windowHeight/2){
@@ -83,8 +103,9 @@ function draw() {
     troublesome1.expansion= -troublesome1.expansion
   };
 
+
 //troublesome 4
-  rect(0,2*windowHeight/3,troublesome4.size1,troublesome4.size2);
+  rect(40,2*windowHeight/3,troublesome4.size1,troublesome4.size2);
   troublesome4.size1 = troublesome4.size1 + troublesome4.expansion;
   if (troublesome4.size1>windowWidth/4){
     troublesome4.expansion= -troublesome4.expansion
@@ -93,11 +114,11 @@ function draw() {
     troublesome4.expansion= -troublesome4.expansion
   };
 
-  rect(3*windowWidth/4,windowHeight/3,windowWidth/4,100);
-  rect(3*windowWidth/4,windowHeight/2,100,windowHeight/2);
 
 
 //troublesome 2
+rect(3*windowWidth/4,windowHeight/3,windowWidth/4,100);
+rect(3*windowWidth/4,windowHeight/2,100,windowHeight/2);
 push()
   fill(bg.r,bg.g,bg.b)
   stroke(bg.r,bg.g,bg.b)
@@ -111,6 +132,7 @@ push()
     troublesome2.expansion= -troublesome2.expansion
   };
 
+
 //troublesome 3
   rect(3*windowWidth/4,windowHeight/3,troublesome3.size1,troublesome3.size2);
   troublesome3.size1 = troublesome3.size1 + troublesome3.expansion;
@@ -122,7 +144,39 @@ push()
   };
 pop()
 
-//user
+
+//users lives display
+fill(life.fill.r,life.fill.g,life.fill.b)
+
+
+// the forbidden areas
+  //between user and troublesome 1
+if(user.x<windowWidth/4+100 && user.x>windowWidth/4 && user.y>0 && user.y<windowHeight/2){
+rect(life.x,life.y,life.size,life.size2)
+life.size2=life.size2+30
+
+};
+  //betweem user and troublesome 2
+if(user.x<3*windowWidth/4+100 && user.x>3*windowWidth/4 && user.y>windowHeight/2 && user.y<windowHeight){
+  rect(life.x,life.y,life.size,life.size2)
+  life.size2=life.size2+30
+};
+  //betweem user and troublesome 3
+if(user.y<windowHeight/3+100 && user.y>windowHeight/3 && user.x>3*windowWidth/4 && user.x<windowWidth){
+  rect(life.x,life.y,life.size,life.size2)
+  life.size2=life.size2+30
+};
+  //between user and troublesome 4
+if(user.x<windowWidth/4 && user.x>0 && user.y>2*windowHeight/3 && user.y<2*windowHeight/3+100){
+  rect(life.x,life.y,life.size,life.size2)
+  life.size2=life.size2+30
+}
+
+if(life.size2>lifeLimit){
+  noLoop()
+}
+
+//user display and control
   fill(255, 229, 181)
   ellipse(user.x,user.y,user.size);
   if (keyIsDown(37)){
@@ -138,6 +192,11 @@ pop()
       user.y=user.y + 10
     };
 
+//acheiving life goals
+push()
+rectMode(CENTER);
+rect(lifeGoals.x,lifeGoals.y,lifeGoals.size)
+pop()
 //horizantal borders
   for(let i = 0; i < 25; i++){
 
