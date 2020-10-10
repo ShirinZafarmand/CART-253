@@ -37,12 +37,23 @@ let user={
 };
 
 let troublesome1={
-  x:300,
-  y:0,
   size1:100,
   size2:0,
   expansion:5,
 };
+
+let troublesome2={
+  size1:100,
+  size2:0,
+  expansion:5,
+};
+
+let troublesome3={
+  size1:0,
+  size2:100,
+  expansion:5,
+};
+
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
@@ -53,6 +64,24 @@ function setup() {
 
 function draw() {
   background(bg.r,bg.g,bg.b);
+
+
+//user
+  ellipse(user.x,user.y,user.size);
+  if (keyIsDown(37)){
+      user.x= user.x - 10;
+    }
+    else if(keyIsDown(39)){
+      user.x=user.x + 10;
+    }
+    else if(keyIsDown(38)){
+      user.y=user.y - 10;
+    }
+    else if(keyIsDown(40)){
+      user.y=user.y + 10
+    };
+
+
 
 //horizantal borders
   for(let i = 0; i < 25; i++){
