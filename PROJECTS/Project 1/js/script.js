@@ -72,13 +72,19 @@ let troublesome4={
 };
 
 let lifeGoals={
+  fill:{
+    r:255,
+    g:137,
+    b:33,
+    alpha:200},
   x:600,
   y:500,
   size:100,
-  alpha:0
 }
 
 let lifeLimit=1500;
+
+let state ='title';
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
@@ -90,7 +96,11 @@ function setup() {
 function draw() {
   background(bg.r,bg.g,bg.b);
 
-
+//screen title
+if(state==='title'){
+  fill(255);
+  text('Love is shooting a shot in the dark. Are you feeling lucky today? Right click to start!',width/2,height/2);}
+  else if(state==='start!'){
 
 //troublesome 1
   fill(117, 117, 117)
@@ -192,11 +202,35 @@ if(life.size2>lifeLimit){
       user.y=user.y + 10
     };
 
-//acheiving life goals
+//life goals dislay
 push()
+fill(lifeGoals.fill.r,lifeGoals.fill.g,lifeGoals.fill.b)
 rectMode(CENTER);
 rect(lifeGoals.x,lifeGoals.y,lifeGoals.size)
+lifeGoals.size=lifeGoals.size-0.3
+
+
+//acheiving life goals
+let d=dist(user.x,user.y,lifeGoals.x,lifeGoals.y)
+if(d<lifeGoals.size/2 + user.size/2){
+  lifeGoals.x=lifeGoals.x+random(-windowWidth,windowWidth)
+  lifeGoals.y=lifeGoals.y+random(-windowHeight,windowHeight)
+  lifeGoals.size=100
+  lifeGoals.x=constrain(lifeGoals.x,0,windowWidth)
+  lifeGoals.y=constrain(lifeGoals.y,0,windowHeight)
+}
+
+if(d>lifeGoals.size/2 + user.size/2 && lifeGoals.size<1){
+  noLoops()
+}
+
+
+
+
 pop()
+
+
+
 //horizantal borders
   for(let i = 0; i < 25; i++){
 
@@ -211,3 +245,9 @@ pop()
     border2.x = border2.x + border2.space;
  }
 }
+}
+//click to start the game
+function mousePressed(){
+  if(state==='title'){
+    state='start!'}
+  };
