@@ -1,22 +1,70 @@
 "use strict";
 
 /**************************************************
-Template p5 project
-Pippin Barr
+Project 1-
+Shirin Zafarmand
 
 Here is a description of this template p5 project.
 **************************************************/
+let bg={
+  r:0,
+  g:0,
+  b:0
+};
 
-// setup()
-//
-// Description of setup() goes here.
+let border={
+  x:60,
+  y:0,
+  fill:{r:176, g:117, b:28},
+  size1:1,
+  size2:1200,
+  space:100
+};
+
+let border2={
+  x:0,
+  y:100,
+  fill:{r:176, g:117, b:28},
+  size1:1200,
+  size2:1,
+  space:100
+};
+
+let user={
+  x:600,
+  y:600,
+  size:98,
+};
+
+let troublesome1={
+  x:300,
+  y:0,
+  size1:100,
+  size2:0,
+  expansion:5,
+};
+
 function setup() {
+  createCanvas(windowWidth,windowHeight);
+  noStroke();
+};
 
-}
 
-// draw()
-//
-// Description of draw() goes here.
+
 function draw() {
+  background(bg.r,bg.g,bg.b);
 
+//horizantal borders
+  for(let i = 0; i < 25; i++){
+
+    fill(border.fill.r,border.fill.g,border.fill.b);
+    rect(border.x,border.y,border.size1,border.size2);
+    border.x = border.x + border.space;
+  };
+
+//vertical borders
+ for(let b = 0; b < 25; b++){
+    rect(border2.x,border2.y,border2.size1,border2.size2);
+    border2.x = border2.x + border2.space;
+ }
 }
