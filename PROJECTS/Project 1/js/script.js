@@ -45,7 +45,7 @@ let life={
   x:0,
   y:0,
   size:0,
-  speed:100,
+  speed:110,
   fill:{
     r:100,
     g:0,
@@ -60,25 +60,25 @@ let life={
       b:117},
     size1:100,
     size2:0,
-    expansion:60
+    expansion:70
   };
 
   let barrier2={
     size1:0,
     size2:100,
-    expansion:60
+    expansion:70
   };
 
   let barrier3={
     size1:0,
     size2:110,
-    expansion:60
+    expansion:70
   };
 
   let barrier4={
     size1:110,
     size2:0,
-    expansion:60
+    expansion:70
   };
 
   let lifeGoals={
@@ -92,6 +92,21 @@ let life={
     size:100
   };
 
+let ancillaryPack={
+  fill:{
+    r:255,
+    g:244,
+    b:125
+  },
+  x:1200,
+  y:1000,
+  size:40,
+  speed:7,
+  vx:0,
+  vy:0,
+  angle:0.05
+};
+
   let state ='title';
 
   function setup() {
@@ -99,6 +114,7 @@ let life={
     noStroke();
     textSize(32);
     textAlign(CENTER,CENTER);
+    ancillaryPack.vx=ancillaryPack.speed;
   };
 
 
@@ -152,6 +168,9 @@ let life={
 
         //acheiving life goals
         achievment()
+
+       //ancillary ancillaryPack
+       ancillaryDisplay()
 
         //horizontal borders
       //  horizontalBorders()
@@ -282,7 +301,7 @@ let life={
       rectMode(CENTER);
       fill(lifeGoals.fill.r,lifeGoals.fill.g,lifeGoals.fill.b);
       rect(lifeGoals.x,lifeGoals.y,lifeGoals.size);
-      lifeGoals.size=lifeGoals.size-0.3;
+      lifeGoals.size=lifeGoals.size-0.2;
       pop();
     };
 
@@ -321,6 +340,30 @@ let life={
       for(let b = 0; b < 25; b++){
         rect(border2.x,border2.y,border2.size1,border2.size2);
         border2.x = border2.x + border2.space;
+      };
+    };
+
+
+    function ancillaryDisplay(){
+           //ancillary pach automated movement
+      let change=random();
+      if (change<0.03){
+        ancillaryPack.vx=random(-ancillaryPack.speed,ancillaryPack.speed);
+        ancillaryPack.vy=random(-ancillaryPack.speed,ancillaryPack.speed);
+      };
+
+      ancillaryPack.x=ancillaryPack.x+ancillaryPack.vx;
+      ancillaryPack.y=ancillaryPack.y+ancillaryPack.vy;
+
+      //ancillary Pack display
+      fill(ancillaryPack.fill.r,ancillaryPack.fill.g,ancillaryPack.fill.b);
+      rect(ancillaryPack.x,ancillaryPack.y,ancillaryPack.size);
+
+      //ancillary pack's influence on user's speed
+      let d2=dist(user.x,user.y,ancillaryPack.x,ancillaryPack.y);
+      if(d2<ancillaryPack.size/2+user.size/2){
+        user.movement=user.movement-2.5;
+        ancillaryPack.size=0;
       };
     };
 
