@@ -14,24 +14,6 @@ let bg={
   b:49
 };
 
-let border={
-  x:60,
-  y:0,
-  fill:{r:176, g:117, b:28},
-  size1:1,
-  size2:1200,
-  space:100
-};
-
-let border2={
-  x:0,
-  y:100,
-  fill:{r:176, g:117, b:28},
-  size1:1200,
-  size2:1,
-  space:100
-};
-
 let user={
   fill:{
     r:173,
@@ -89,7 +71,6 @@ let warning={
         r:73,
         g:115,
         b:36
-
       },
       x:600,
       y:500,
@@ -126,10 +107,10 @@ let warning={
     function draw() {
       background(bg.r,bg.g,bg.b);
 
-      //screen title
+      //starting screen title
       if(state==='title'){
         fill(255);
-        text('A life simulation.Try to avoid toxic people that are hoping to distract you. Do not hesitate, reach your life goals before they fade away! you ready? click right! ',width/2,height/2);}
+        text('A life simulation.Try to avoid toxic people that are hoping to distract you. Do not hesitate, achieve your life goals before they fade away! you ready? click right! ',width/2,height/2);}
         else if(state==='start!'){
 
           //life barrier 1 display
@@ -139,44 +120,43 @@ let warning={
           barrier2Display();
 
           //life barrier 3 display
-          barrier3Display()
+          barrier3Display();
 
           //life barrier 4 display
-          barrier4Display()
+          barrier4Display();
 
-          //displaying warning for a collision berween toxic rectangles and user
-          warningDisplay()
-
+          //displaying warning for a collision between toxic rectangles and user
+          warningDisplay();
+          
           // the forbidden areas
           //between user and barrier 1
-          barrier1UserEncounter()
+          barrier1UserEncounter();
 
           //betweem user and barrier 2
-          barrier2UserEncounter()
+          barrier2UserEncounter();
 
           //betweem user and barrier 3
-          barrier3UserEncounter()
+          barrier3UserEncounter();
 
           //between user and barrier 4
-          barrier4UserEncounter()
+          barrier4UserEncounter();
 
           //user's display and control
-          userControl()
+          userControl();
 
           //life goal dislay
-          lifeGoalsDisplay()
+          lifeGoalsDisplay();
 
-          //acheiving life goals
-          achievment()
+          //acheiving life goals(reaching the green rectangle)
+          achievment();
 
-          //having a premire speed in form of a small yellow rectangle
-          ancillaryDisplay()
-
+          //having a premium speed in form of a small yellow rectangle
+          ancillaryDisplay();
         }
-          //ending titration
+        //ending titration
         else if(state==='end'){
-          endingTitration()
-        }
+          endingTitration();
+        };
       };
 
 
@@ -240,14 +220,6 @@ let warning={
       };
 
 
-      function warningDisplay(){
-        fill(warning.fill.r,warning.fill.g,warning.fill.b,warning.fill.alpha);
-        if(warning.size>windowWidth){
-            state==='end';
-        };
-      };
-
-
       function barrier1UserEncounter(){
         if(user.x<windowWidth/4+100 && user.x>windowWidth/4 && user.y>0 && user.y<windowHeight/2){
           rect(warning.x,warning.y,warning.size,windowHeight);
@@ -258,7 +230,7 @@ let warning={
 
       function barrier2UserEncounter(){
         if(user.x<3*windowWidth/4+100 && user.x>3*windowWidth/4 && user.y>windowHeight/2 && user.y<windowHeight){
-          rect(warning.x,warning.ywarninge.size,windowHeight);
+          rect(warning.x,warning.y,warning.size,windowHeight);
           warning.size=warning.size+warning.speed;
         };
       };
@@ -276,6 +248,14 @@ let warning={
         if(user.x<windowWidth/4 && user.x>0 && user.y>2*windowHeight/3 && user.y<2*windowHeight/3+100){
           rect(warning.x,warning.y,warning.size,windowHeight);
           warning.size=warning.size+warning.speed;
+        };
+      };
+
+
+      function warningDisplay(){
+        fill(warning.fill.r,warning.fill.g,warning.fill.b,warning.fill.alpha);
+        if(warning.size>windowWidth){
+          state='end';
         };
       };
 
@@ -302,7 +282,7 @@ let warning={
 
 
       function lifeGoalsDisplay(){
-        //life goals dislay
+        //life goals dislay(reaching the green rectangle)
         push();
         rectMode(CENTER);
         fill(lifeGoals.fill.r,lifeGoals.fill.g,lifeGoals.fill.b);
@@ -320,17 +300,17 @@ let warning={
           lifeGoals.y=lifeGoals.y+random(-windowHeight,windowHeight);
           lifeGoals.size=100;
           lifeGoals.x=constrain(lifeGoals.x,0,windowWidth);
-          lifeGoals.y=constrain(lifeGoals.y,0,windowHeight)
+          lifeGoals.y=constrain(lifeGoals.y,0,windowHeight);
         };
 
         if(d>lifeGoals.size/2 + user.size/2 && lifeGoals.size<1){
-          state==='end';
+          state='end';
         };
       };
 
 
       function ancillaryDisplay(){
-        //ancillary pach automated movement
+        //ancillary pack automated movement
         let change=random();
         if (change<0.03){
           ancillaryPack.vx=random(-ancillaryPack.speed,ancillaryPack.speed);
@@ -356,8 +336,8 @@ let warning={
       function endingTitration(){
         if (state === 'end'){
           fill(255)
-          text('Well life is not all about the acheivments and goals, it is about enjoying life. Did you have fun playing the game? If so Consider it a small life acheivment ;)' ,width/2,height/2)
-        }
+          text('You lost your chances. Well life is not all about the acheivments and goals, it is about enjoying life. Did you have fun playing the game? If so Consider it a small life acheivment ;)' ,width/2,height/2)
+        };
       };
 
 
