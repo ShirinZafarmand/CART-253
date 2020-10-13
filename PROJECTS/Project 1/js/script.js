@@ -1,10 +1,12 @@
 "use strict";
 
 /**************************************************
-Project 1-
+Project 1- Life As We Know It
 Shirin Zafarmand
 
-Here is a description of this template p5 project.
+A game in which one tries to achieve life goals that are illustrated as green rectangles. In this simulation the user has control over
+the circle's movement with page up, down, left, right keys.the user must avoid enteracting with toxic people(grey rectangles) and attain
+goals before they vanish. In the meantime there is a floating small gift on the screen that if touched, accelarates user's movements.
 **************************************************/
 let bg={
   r:51,
@@ -170,9 +172,11 @@ let warning={
           //having a premire speed in form of a small yellow rectangle
           ancillaryDisplay()
 
+        }
           //ending titration
+        else if(state==='end'){
           endingTitration()
-        };
+        }
       };
 
 
@@ -182,10 +186,10 @@ let warning={
         rect(windowWidth/4,0,barrier1.size1,barrier1.size2);
         barrier1.size2 = barrier1.size2 + barrier1.expansion;
         if (barrier1.size2>windowHeight/2){
-          barrier1.expansion= -barrier1.expansion
+          barrier1.expansion= -barrier1.expansion;
         };
         if (barrier1.size2===0){
-          barrier1.expansion= -barrier1.expansion
+          barrier1.expansion= -barrier1.expansion;
         };
       };
 
@@ -195,10 +199,10 @@ let warning={
         rect(0,2*windowHeight/3,barrier2.size1,barrier2.size2);
         barrier2.size1 = barrier2.size1 + barrier2.expansion;
         if (barrier2.size1>windowWidth/4){
-          barrier2.expansion= -barrier2.expansion
+          barrier2.expansion= -barrier2.expansion;
         };
         if (barrier2.size1===0){
-          barrier2.expansion= -barrier2.expansion
+          barrier2.expansion= -barrier2.expansion;
         };
       };
 
@@ -214,10 +218,10 @@ let warning={
         rect(3*windowWidth/4,windowHeight/3,barrier3.size1,barrier3.size2);
         barrier3.size1 = barrier3.size1 + barrier3.expansion;
         if (barrier3.size1>windowWidth/4){
-          barrier3.expansion= -barrier3.expansion
+          barrier3.expansion= -barrier3.expansion;
         };
         if (barrier3.size1===0){
-          barrier3.expansion= -barrier3.expansion
+          barrier3.expansion= -barrier3.expansion;
         };
       };
 
@@ -227,19 +231,19 @@ let warning={
         rect(3*windowWidth/4,windowHeight/2,barrier4.size1,barrier4.size2);
         barrier4.size2 = barrier4.size2 + barrier4.expansion;
         if (barrier4.size2>windowHeight/2){
-          barrier4.expansion= -barrier4.expansion
+          barrier4.expansion= -barrier4.expansion;
         };
         if (barrier4.size2===0){
-          barrier4.expansion= -barrier4.expansion
+          barrier4.expansion= -barrier4.expansion;
         };
-        pop()
+        pop();
       };
 
 
       function warningDisplay(){
         fill(warning.fill.r,warning.fill.g,warning.fill.b,warning.fill.alpha);
         if(warning.size>windowWidth){
-          state==='end'
+            state==='end';
         };
       };
 
@@ -247,7 +251,7 @@ let warning={
       function barrier1UserEncounter(){
         if(user.x<windowWidth/4+100 && user.x>windowWidth/4 && user.y>0 && user.y<windowHeight/2){
           rect(warning.x,warning.y,warning.size,windowHeight);
-          warning.size=warning.size+warning.speed
+          warning.size=warning.size+warning.speed;
         };
       };
 
@@ -255,7 +259,7 @@ let warning={
       function barrier2UserEncounter(){
         if(user.x<3*windowWidth/4+100 && user.x>3*windowWidth/4 && user.y>windowHeight/2 && user.y<windowHeight){
           rect(warning.x,warning.ywarninge.size,windowHeight);
-          warning.size=warning.size+warning.speed
+          warning.size=warning.size+warning.speed;
         };
       };
 
@@ -263,7 +267,7 @@ let warning={
       function barrier3UserEncounter(){
         if(user.y<windowHeight/3+100 && user.y>windowHeight/3 && user.x>3*windowWidth/4 && user.x<windowWidth){
           rect(warning.x,warning.y,warning.size,windowHeight);
-          warning.size=warning.size+warning.speed
+          warning.size=warning.size+warning.speed;
         };
       };
 
@@ -271,7 +275,7 @@ let warning={
       function barrier4UserEncounter(){
         if(user.x<windowWidth/4 && user.x>0 && user.y>2*windowHeight/3 && user.y<2*windowHeight/3+100){
           rect(warning.x,warning.y,warning.size,windowHeight);
-          warning.size=warning.size+warning.speed
+          warning.size=warning.size+warning.speed;
         };
       };
 
@@ -281,16 +285,16 @@ let warning={
         fill(user.fill.r,user.fill.g,user.fill.b)
         ellipse(user.x,user.y,user.size);
         if (keyIsDown(37)){
-          user.x= user.x + user.movement
+          user.x= user.x + user.movement;
         }
         else if(keyIsDown(39)){
-          user.x=user.x - user.movement
+          user.x=user.x - user.movement;
         }
         else if(keyIsDown(38)){
-          user.y=user.y + user.movement
+          user.y=user.y + user.movement;
         }
         else if(keyIsDown(40)){
-          user.y=user.y - user.movement
+          user.y=user.y - user.movement;
         };
         user.x=constrain(user.x,0,windowWidth);
         user.y=constrain(user.y,0,windowHeight);
@@ -317,10 +321,10 @@ let warning={
           lifeGoals.size=100;
           lifeGoals.x=constrain(lifeGoals.x,0,windowWidth);
           lifeGoals.y=constrain(lifeGoals.y,0,windowHeight)
-        }
+        };
 
         if(d>lifeGoals.size/2 + user.size/2 && lifeGoals.size<1){
-          state==='end'
+          state==='end';
         };
       };
 
@@ -336,7 +340,7 @@ let warning={
         ancillaryPack.x=ancillaryPack.x+ancillaryPack.vx;
         ancillaryPack.y=ancillaryPack.y+ancillaryPack.vy;
 
-        //ancillary Pack display
+        //speed ancillary Pack display
         fill(ancillaryPack.fill.r,ancillaryPack.fill.g,ancillaryPack.fill.b);
         rect(ancillaryPack.x,ancillaryPack.y,ancillaryPack.size);
 
@@ -350,9 +354,9 @@ let warning={
 
 
       function endingTitration(){
-        if (state==='end'){
+        if (state === 'end'){
           fill(255)
-          text('life is not all about the acheivments and goals, it is about enjoying life. Did you have fun playing the game? if so Consider it a mere life acheivment ;)' ,width/2,height/2)
+          text('Well life is not all about the acheivments and goals, it is about enjoying life. Did you have fun playing the game? If so Consider it a small life acheivment ;)' ,width/2,height/2)
         }
       };
 
