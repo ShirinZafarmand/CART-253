@@ -1,7 +1,7 @@
 "use strict";
 
 let beeSquad=[];
-let squadSize=170;
+let squadSize=150;
 
 let bg={
   r:0,
@@ -61,10 +61,12 @@ function draw() {
 
   for (let i = 0; i<beeSquad.length; i++){
     moveBee(beeSquad[i]);
+    beeUserEncounter(bee)
   };
 
   for (let i=0; i<beeSquad.length; i++){
     displayBee(beeSquad[i]);
+    beeUserEncounter(bee)
   };
 
   displayQueenBee();
@@ -73,7 +75,7 @@ function draw() {
 
   displayUser();
 
-  beeUserEncounter();
+  beeUserEncounter(bee);
 
   queenUserEncounter();
 };
@@ -130,7 +132,7 @@ function displayQueenBee(){
 
 function displayUser(){
   push();
-  fill(230, 112, 96);
+  fill(255, 60, 33);
   user.x=mouseX;
   user.y=mouseY;
   ellipse(user.x,user.y,user.size);
@@ -138,12 +140,11 @@ function displayUser(){
 };
 
 
-function beeUserEncounter(){
+function beeUserEncounter(bee){
   let d =dist(user.x,user.y,bee.x,bee.y)
   if(d<user.size/2 + bee.size/2){
     noLoop();
-  };
-};
+  }};
 
 function queenUserEncounter(){
   let d =dist(user.x,user.y,queenBee.x,queenBee.y)
