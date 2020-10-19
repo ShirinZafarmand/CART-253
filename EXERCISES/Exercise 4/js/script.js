@@ -33,9 +33,11 @@ let user={
 function setup() {
   createCanvas(windowWidth,windowHeight);
   noStroke();
+
   for (let i = 0; i < squadSize; i++){
     beeSquad[i]= createBee(random(0,width),random(0,height));
   };
+
   queenBee.x=random(0,width);
   queenBee.y=random(0,height);
 };
@@ -60,6 +62,7 @@ function draw() {
   for (let i = 0; i<beeSquad.length; i++){
     moveBee(beeSquad[i]);
   };
+
   for (let i=0; i<beeSquad.length; i++){
     displayBee(beeSquad[i]);
   };
@@ -71,6 +74,8 @@ function draw() {
   displayUser();
 
   beeUserEncounter();
+
+  queenUserEncounter();
 };
 
 
@@ -135,7 +140,14 @@ function displayUser(){
 
 function beeUserEncounter(){
   let d =dist(user.x,user.y,bee.x,bee.y)
-  if(d<user.size/2+bee.size/2){
+  if(d<user.size/2 + bee.size/2){
     noLoop();
   };
 };
+
+function queenUserEncounter(){
+  let d =dist(user.x,user.y,queenBee.x,queenBee.y)
+  if(d<user.size/2 + queenBee.size/2){
+    noLoop();
+  };
+}
