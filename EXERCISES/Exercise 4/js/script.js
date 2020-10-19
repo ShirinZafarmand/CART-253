@@ -1,7 +1,7 @@
 "use strict";
 
 let beeSquad=[];
-let squadSize=150;
+let squadSize=90;
 
 let bg={
   r:0,
@@ -20,7 +20,8 @@ let queenBee={
   size:100,
   vx:0,
   vy:0,
-  speed:2
+  speed:6,
+  accelerationLimit:500
 };
 
 let user={
@@ -28,6 +29,16 @@ let user={
   y:0,
   size:50,
 };
+
+let timer={
+  x:0,
+  y:0,
+  size1:30,
+  size2:1500,
+  fill:255,
+  shrink:30
+};
+
 
 
 function setup() {
@@ -38,7 +49,7 @@ function setup() {
     beeSquad[i]= createBee(random(0,width),random(0,height));
   };
 
-  queenBee.x=random(0,width);
+  queenBee.x=random(width/2,width);
   queenBee.y=random(0,height);
 };
 
@@ -50,7 +61,7 @@ function createBee(x,y){
     size:50,
     vx:0,
     vy:0,
-    speed:5,
+    speed:6,
   };
   return bee;
 };
@@ -60,13 +71,18 @@ function draw() {
   background(bg.r,bg.g,bg.b);
 
   for (let i = 0; i<beeSquad.length; i++){
-    moveBee(beeSquad[i]);
-    beeUserEncounter(bee)
+    let bee=beeSquad[i];
+    moveBee(bee);
+    beeUserEncounter(bee);
+    displayBee(bee);
   };
 
   for (let i=0; i<beeSquad.length; i++){
-    displayBee(beeSquad[i]);
-    beeUserEncounter(bee)
+    let bee=beeSquad[i];
+    moveBee(bee);
+    beeUserEncounter(bee);
+    displayBee(bee);
+
   };
 
   displayQueenBee();
@@ -75,16 +91,20 @@ function draw() {
 
   displayUser();
 
-  beeUserEncounter(bee);
-
   queenUserEncounter();
+
+  speedAcceleration();
+
+  displayTimer();
+
+  timerCheck();
 };
 
 
 
 
 function moveBee(bee){
-  let change=random(0,40)
+  let change=random(0,20)
   if (change<0.5){
     bee.vx=random(-bee.speed,bee.speed);
     bee.vy=random(-bee.speed,bee.speed);
@@ -107,7 +127,7 @@ function displayBee(bee){
 
 
 function moveQueenBee(){
-  let change=random(0,20)
+  let change=random(0,10)
   if (change<0.5){
     queenBee.vx=random(-queenBee.speed,queenBee.speed);
     queenBee.vy=random(-queenBee.speed,queenBee.speed);
@@ -146,9 +166,29 @@ function beeUserEncounter(bee){
     noLoop();
   }};
 
-function queenUserEncounter(){
-  let d =dist(user.x,user.y,queenBee.x,queenBee.y)
-  if(d<user.size/2 + queenBee.size/2){
-    noLoop();
-  };
-}
+  function queenUserEncounter(){
+    let d =dist(user.x,user.y,queenBee.x,queenBee.y)
+    if(d<user.size/2 + queenBee.size/2){
+      noLoop();
+    };
+  }
+
+  function speedAcceleration(){
+    let a=dist(user.x,user.y,queenBee.x,queenBee.y);
+    if (a<queenBee.accelerationLimit){
+      queenBee.speed=15
+    }
+  }
+
+  function displayTimer(){
+    fill(timer.fill)
+    rect(timer.x,timer.y,timer.size1,timer.size2)
+    timer.size2=timer.size2-timer.shrink
+  }
+
+  function timerCheck(){
+    let a=dist(user.x,user.y,queenBee.x,queenBee.y);
+    if(a>user.size/2 + queenBee.size/2 && timer.size2<1){
+      noLoop()
+    }
+  }
