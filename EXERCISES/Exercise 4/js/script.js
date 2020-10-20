@@ -36,15 +36,16 @@ let timer={
   size1:30,
   size2:1500,
   fill:255,
-  shrink:30
+  shrink:3
 };
 
-
+  let state ='title';
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
   noStroke();
-
+  textSize(32);
+  textAlign(CENTER,CENTER);
   for (let i = 0; i < squadSize; i++){
     beeSquad[i]= createBee(random(0,width),random(0,height));
   };
@@ -61,7 +62,7 @@ function createBee(x,y){
     size:50,
     vx:0,
     vy:0,
-    speed:6,
+    speed:1.5,
   };
   return bee;
 };
@@ -69,37 +70,43 @@ function createBee(x,y){
 
 function draw() {
   background(bg.r,bg.g,bg.b);
+  if(state==='title'){
+    fill(255);
+    text("Try to avoid contact with bees and get to their queen before time's over. Simple! Ready? Click right",width/2,height/2);}
+    else if(state==='start!'){
+      for (let i = 0; i<beeSquad.length; i++){
+        let bee=beeSquad[i];
+        moveBee(bee);
+        beeUserEncounter(bee);
+        displayBee(bee);
+      };
 
-  for (let i = 0; i<beeSquad.length; i++){
-    let bee=beeSquad[i];
-    moveBee(bee);
-    beeUserEncounter(bee);
-    displayBee(bee);
-  };
+      for (let i=0; i<beeSquad.length; i++){
+        let bee=beeSquad[i];
+        moveBee(bee);
+        beeUserEncounter(bee);
+        displayBee(bee);
 
-  for (let i=0; i<beeSquad.length; i++){
-    let bee=beeSquad[i];
-    moveBee(bee);
-    beeUserEncounter(bee);
-    displayBee(bee);
+      };
 
-  };
+      displayQueenBee();
 
-  displayQueenBee();
+      moveQueenBee();
 
-  moveQueenBee();
+      displayUser();
 
-  displayUser();
+      queenUserEncounter();
 
-  queenUserEncounter();
+      speedAcceleration();
 
-  speedAcceleration();
+      displayTimer();
 
-  displayTimer();
-
-  timerCheck();
-};
-
+      timerCheck();
+    }
+    else if(state==='end'){
+      endingTitration();
+    };
+    }
 
 
 
@@ -163,7 +170,7 @@ function displayUser(){
 function beeUserEncounter(bee){
   let d =dist(user.x,user.y,bee.x,bee.y)
   if(d<user.size/2 + bee.size/2){
-    noLoop();
+    state='end';
   }};
 
   function queenUserEncounter(){
@@ -176,7 +183,7 @@ function beeUserEncounter(bee){
   function speedAcceleration(){
     let a=dist(user.x,user.y,queenBee.x,queenBee.y);
     if (a<queenBee.accelerationLimit){
-      queenBee.speed=15
+      queenBee.speed=10
     }
   }
 
@@ -189,6 +196,20 @@ function beeUserEncounter(bee){
   function timerCheck(){
     let a=dist(user.x,user.y,queenBee.x,queenBee.y);
     if(a>user.size/2 + queenBee.size/2 && timer.size2<1){
-      noLoop()
+      state='end'
     }
   }
+
+  function endingTitration(){
+    if (state === 'end'){
+      fill(255)
+      text("You could not make it. Let's try another round" ,width/2,height/2)
+    };
+  };
+
+
+  function mousePressed(){
+    //click to start the game
+    if(state==='title'){
+      state='start!'}
+    };
