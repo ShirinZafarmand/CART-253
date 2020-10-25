@@ -73,7 +73,7 @@ function createBee(x,y){
     size:55,
     vx:0,
     vy:0,
-    speed:2,
+    speed:3,
   };
   return bee;
 };

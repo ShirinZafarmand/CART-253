@@ -127,7 +127,7 @@ let warning={
 
           //displaying warning for a collision between toxic rectangles and user
           warningDisplay();
-          
+
           // the forbidden areas
           //between user and barrier 1
           barrier1UserEncounter();
