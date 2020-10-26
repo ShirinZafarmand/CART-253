@@ -7,7 +7,7 @@ class Ball{
     this.vy=0;
     this.ax=0;
     this.ay=0;
-    this.maxSpeed=6;
+    this.maxSpeed=7;
     this.size=40;
     this.active=true;
   }
@@ -21,16 +21,23 @@ class Ball{
     this.vy=this.vy+this.ay;
 
     this.vx=constrain(this.vx,-this.maxSpeed,this.maxSpeed);
-    this.vv=constrain(this.vy,-this.maxSpeed,this.maxSpeed);
+    this.vy=constrain(this.vy,-this.maxSpeed,this.maxSpeed);
 
     this.x= this.x+this.vx;
     this.y= this.y+this.vy;
+
 
     if (this.y - this.size/2 >height){
       this.active=false;
     }
   }
 
+framing(){
+  if(this.x>=width){
+    this.vx = -this.vx;
+    this.ax = 0;
+  }
+}
   bounce(paddle){
     if(this.x>paddle.x-paddle.width/2 &&
        this.x<paddle.x+paddle.width/2 &&
@@ -39,11 +46,18 @@ class Ball{
 
       this.vy = -this.vy;
       this.ay = 0;
-      
+
       let dx= this.x-paddle.x;
-      this.vx=this.vx+ map(dx,-paddle.width/2,paddle.width/2,-2,2)
+      this.vx=this.vx+ map(dx,-paddle.width/2,paddle.width/2,-5,5)
     }
   }
+
+checkIfGoal(){
+  let d =dist (this.x,this.y,gate.x,gate.y)
+  if( d < this.size/2+gate.width/2){
+    bg.g=200
+  }
+}
 
   display(){
     push();
