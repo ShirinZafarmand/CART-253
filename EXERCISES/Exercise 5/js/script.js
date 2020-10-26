@@ -9,7 +9,7 @@ Here is a description of this template p5 project.
 let paddle;
 let gravityForce=0.00025;
 let balls=[];
-let numBalls= 3;
+let numBalls= 100;
 let bg={
   r:0,
   g:0,
@@ -17,7 +17,7 @@ let bg={
 };
 
 let gate={
-  x:0, y:500, width:50, height:200,
+  x:500, y:900 , width:200, height:20,
 }
 
 function setup() {
@@ -27,7 +27,7 @@ function setup() {
   paddle = new Paddle(100,100);
   for( let i=0; i <numBalls; i++){
     let x=random(0,width)
-    let y= random(-400,-100)
+    let y= random(-50000,-50)
     let ball = new Ball(x,y)
     balls.push(ball)
   }
@@ -43,6 +43,13 @@ pop()
 paddle.move();
 paddle.display();
 
+
+if (keyIsDown(37)){
+  gate.x=gate.x-10;}
+
+if(keyIsDown(39)){
+  gate.x=gate.x+10;}
+
 for( let i=0; i<balls.length; i++){
   let ball=balls[i];
   if (ball.active)
@@ -53,5 +60,4 @@ for( let i=0; i<balls.length; i++){
   ball.checkIfGoal();
   ball.framing();
  }
-
 }

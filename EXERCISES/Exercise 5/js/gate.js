@@ -1,10 +1,10 @@
 class Gate{
 
   constrctor(){
-    this.x=0;
+    this.x=500;
     this.y=height/2;
-    this.width=50;
-    this.height=400;
+    this.width=400;
+    this.height=50;
   }
 
   display(){
