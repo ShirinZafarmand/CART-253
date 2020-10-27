@@ -45,7 +45,7 @@ function setup() {
 function draw() {
   if(state==='title'){
     fill(0);
-    text('Love is shooting a shot in the dark. Are you feeling lucky today? Right click to start!',width/2,height/2);}
+    text('catch enough red balls and avoid green boxes before times is up! ready ? click right.',width/2,height/2);}
     else if(state==='start!'){
 background(bg.r,bg.g,bg.b);
 gate.display()
@@ -71,6 +71,8 @@ for( let i=0; i<balls.length; i++){
    box.display();
    box.checkIfTouched();
   }
+
+  endingTitration();
 }
 }
 
@@ -78,3 +80,10 @@ function mousePressed(){
   if(state==='title'){
     state='start!'}
   };
+
+  function endingTitration(){
+    if (state === 'end'){
+      fill(255)
+      text('oooops!! try another round' ,width/2,height/2)
+    };
+}

@@ -19,6 +19,7 @@ class Gate{
   display(){
     push()
     fill(255)
+    rectMode(CENTER)
     rect(this.x,this.y,this.width,this.height)
     pop()
   }
