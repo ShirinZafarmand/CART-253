@@ -1,11 +1,12 @@
 "use strict";
 
 /**************************************************
-Exercise 5-
+Exercise 5- Intermidiate juggling
 Shirin Zafarmand
 
 Here is a description of this template p5 project.
 **************************************************/
+let state ='title';
 let paddle;
 let score;
 let gate;
@@ -26,7 +27,6 @@ function setup() {
   textAlign(CENTER,CENTER);
   score= new Score();
   gate = new Gate();
-  paddle = new Paddle(100,100);
   for( let i=0; i <numBalls; i++){
     let x=random(0,width)
     let y= random(-50000,-50)
@@ -43,11 +43,13 @@ function setup() {
 
 }
 function draw() {
+  if(state==='title'){
+    fill(0);
+    text('Love is shooting a shot in the dark. Are you feeling lucky today? Right click to start!',width/2,height/2);}
+    else if(state==='start!'){
 background(bg.r,bg.g,bg.b);
 gate.display()
 gate.movement();
-paddle.move();
-paddle.display();
 score.scaleDisplay();
 
 
@@ -70,3 +72,9 @@ for( let i=0; i<balls.length; i++){
    box.checkIfTouched();
   }
 }
+}
+
+function mousePressed(){
+  if(state==='title'){
+    state='start!'}
+  };

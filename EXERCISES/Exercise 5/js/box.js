@@ -43,7 +43,7 @@ class Box{
   checkIfTouched(){
     let d =dist (this.x,this.y,gate.x,gate.y)
     if( d < this.size/2+gate.width/2){
-      this.size=0
+      
     }
   }
 
