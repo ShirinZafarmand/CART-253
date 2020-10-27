@@ -1,5 +1,6 @@
 class Box{
 
+  //bilding the boxs structure
   constructor(x,y){
     this.x=x;
     this.y=y;
@@ -7,15 +8,16 @@ class Box{
     this.vy=0;
     this.ax=0;
     this.ay=0;
-    this.maxSpeed=35;
+    this.maxSpeed=25;
     this.size=60;
     this.active=true;
-  }
+  };
 
+  //a more realistic falling using the gravity
   gravity(force){
     this.ay=this.ay+force;
-  }
-
+  };
+  //boxs movement of falling
   move(){
     this.vx=this.vx+this.ax;
     this.vy=this.vy+this.ay;
@@ -29,22 +31,23 @@ class Box{
 
     if (this.y - this.size/2 >height){
       this.active=false;
-    }
-  }
+    };
+  };
 
+  //displaying the boxs
   display(){
     push();
     fill(20,100,100);
     stroke(0);
     rect(this.x,this.y,this.size);
     pop();
-  }
+  };
 
+  //check if the gate has mistakely touched the green boxes
   checkIfTouched(){
     let d =dist (this.x,this.y,gate.x,gate.y)
     if( d < this.size/2+gate.width/2){
       state='lose';
-    }
-  }
-
+    };
+  };
 }
