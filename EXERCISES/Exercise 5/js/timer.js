@@ -17,7 +17,7 @@ class Timer{
     rect(this.x,this.y,this.width,this.height);
     pop();
   };
-  
+
   //the speed of the timer
   shrink(){
     this.height=this.height+this.diminish;

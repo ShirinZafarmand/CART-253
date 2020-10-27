@@ -11,6 +11,11 @@ class Ball{
     this.maxSpeed=0;
     this.size=60;
     this.active=true;
+    this.fill={
+      r:200,
+      g:10,
+      b:10
+    };
   };
 
   //a more realistic falling using the gravity
@@ -49,7 +54,7 @@ class Ball{
   //displying balss
   display(){
     push();
-    fill(200,10,10);
+    fill(this.fill.r,this.fill.g,this.fill.b);
     stroke(0);
     ellipse(this.x,this.y,this.size);
     pop();

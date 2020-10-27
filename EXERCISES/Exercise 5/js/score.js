@@ -7,13 +7,18 @@ class Score{
     this.width=50;
     this.height=10;
     this.growth=4;
+    this.fill={
+      r:200,
+      g:0,
+      b:0
+    };
   };
 
   //displaying scale
   scaleDisplay(){
     push();
     rectMode(CORNER);
-    fill(200,0,0);
+    fill(this.fill.r,this.fill.g,this.fill.b);
     rect(this.x,this.y,this.width,this.height);
     pop();
   };

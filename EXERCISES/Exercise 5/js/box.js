@@ -11,6 +11,11 @@ class Box{
     this.maxSpeed=25;
     this.size=60;
     this.active=true;
+    this.fill={
+      r:20,
+      g:100,
+      b:100
+    };
   };
 
   //a more realistic falling using the gravity
@@ -37,7 +42,7 @@ class Box{
   //displaying the boxs
   display(){
     push();
-    fill(20,100,100);
+    fill(this.fill.r,this.fill.g,this.fill.b);
     stroke(0);
     rect(this.x,this.y,this.size);
     pop();

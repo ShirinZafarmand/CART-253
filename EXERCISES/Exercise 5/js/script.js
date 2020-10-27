@@ -1,5 +1,4 @@
 "use strict";
-
 /**************************************************
 Exercise 5- Intermidiate juggling
 Shirin Zafarmand
@@ -109,7 +108,7 @@ function draw() {
     //displaying winning titration
     function endingTitration(){
       if (state === 'win'){
-        fill(255)
+        fill(255);
         text('YAY! you made it!' ,width/2,height/2)
       };
     };
