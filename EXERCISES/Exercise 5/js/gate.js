@@ -1,10 +1,19 @@
 class Gate{
 
-  constrctor(){
+  constructor(){
     this.x=500;
-    this.y=height/2;
-    this.width=400;
-    this.height=50;
+    this.y=900;
+    this.width=200;
+    this.height=10;
+    this.speed=55;
+  }
+
+  movement(){
+    if (keyIsDown(37)){
+      this.x=this.x-10;}
+
+    if(keyIsDown(39)){
+      this.x=this.x+10;}
   }
 
   display(){

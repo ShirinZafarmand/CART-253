@@ -1,4 +1,4 @@
-class Ball{
+class Box{
 
   constructor(x,y){
     this.x=x;
@@ -7,7 +7,7 @@ class Ball{
     this.vy=0;
     this.ax=0;
     this.ay=0;
-    this.maxSpeed=0;
+    this.maxSpeed=55;
     this.size=60;
     this.active=true;
   }
@@ -19,8 +19,6 @@ class Ball{
   move(){
     this.vx=this.vx+this.ax;
     this.vy=this.vy+this.ay;
-
-    this.maxSpeed=random(10,15)
 
     this.vx=constrain(this.vx,-this.maxSpeed,this.maxSpeed);
     this.vy=constrain(this.vy,-this.maxSpeed,this.maxSpeed);
@@ -34,29 +32,19 @@ class Ball{
     }
   }
 
-
-framing(){
-  if(this.x>=width){
-    this.vx = -this.vx;
-    this.ax = 0;
-  }
-}
-
-
-checkIfGoal(){
-  let d =dist (this.x,this.y,gate.x,gate.y)
-  if( d < this.size/2+gate.width/2){
-    this.size=0
-    score.height=score.height+score.growth
-  }
-}
-
-
   display(){
     push();
-    fill(200,10,10);
+    fill(20,100,100);
     stroke(0);
-    ellipse(this.x,this.y,this.size);
+    rect(this.x,this.y,this.size);
     pop();
   }
+
+  checkIfTouched(){
+    let d =dist (this.x,this.y,gate.x,gate.y)
+    if( d < this.size/2+gate.width/2){
+      this.size=0
+    }
+  }
+
 }
