@@ -7,7 +7,7 @@ class Box{
     this.vy=0;
     this.ax=0;
     this.ay=0;
-    this.maxSpeed=55;
+    this.maxSpeed=35;
     this.size=60;
     this.active=true;
   }
@@ -43,7 +43,7 @@ class Box{
   checkIfTouched(){
     let d =dist (this.x,this.y,gate.x,gate.y)
     if( d < this.size/2+gate.width/2){
-      state='end';
+      state='lose';
     }
   }
 

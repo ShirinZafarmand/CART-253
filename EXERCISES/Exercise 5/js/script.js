@@ -7,11 +7,11 @@ Shirin Zafarmand
 Here is a description of this template p5 project.
 **************************************************/
 let state ='title';
-let paddle;
+let timer;
 let score;
 let gate;
 let boxs=[];
-let numBoxs=50;
+let numBoxs=40;
 let gravityForce=0.00025;
 let balls=[];
 let numBalls= 100;
@@ -25,6 +25,7 @@ function setup() {
   createCanvas(windowWidth,windowHeight);
   textSize(32);
   textAlign(CENTER,CENTER);
+  timer= new Timer();
   score= new Score();
   gate = new Gate();
   for( let i=0; i <numBalls; i++){
@@ -44,10 +45,13 @@ function setup() {
 }
 function draw() {
   if(state==='title'){
-    fill(0);
+    fill(15,40,30);
     text('catch enough red balls and avoid green boxes before times is up! ready ? click right.',width/2,height/2);}
     else if(state==='start!'){
 background(bg.r,bg.g,bg.b);
+timer.display();
+timer.shrink();
+timer.timeOver();
 gate.display()
 gate.movement();
 score.scaleDisplay();
@@ -82,8 +86,14 @@ function mousePressed(){
   };
 
   function endingTitration(){
-    if (state === 'end'){
-      fill(255)
-      text('oooops!! try another round' ,width/2,height/2)
+    if (state === 'lose'){
+      noLoop();
     };
+}
+
+function endingTitration(){
+  if (state === 'win'){
+    fill(255)
+    text('YAY! you made it!' ,width/2,height/2)
+  };
 }
