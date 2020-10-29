@@ -13,15 +13,19 @@ let bg={
 };
 
 let astronaut={
-    x:200,
-    y:250,
+    x:1200,
+    y:{
+      max:650,
+      min:450,
+      normal:550
+    },
     width:500,
     height:300,
     vx:0,
     vy:0,
     ax:0,
     ay:0,
-    speed:0.4,
+    speed:1,
     fill:{ r:0, g:0, b:0},
     image:undefined
   };
@@ -39,7 +43,19 @@ function setup() {
 function draw() {
   background(bg.r,bg.g,bg.b)
 
-
+//astronaut display
   imageMode(CENTER)
-  image(astronaut.image,astronaut.x,astronaut.y,astronaut.width,astronaut.height)
+  image(astronaut.image,astronaut.x,astronaut.y.normal,astronaut.width,astronaut.height)
+
+
+//astronaut hover mode
+  astronaut.y.normal= astronaut.y.normal+ astronaut.speed
+
+  if (astronaut.y.normal>=astronaut.y.max){
+    astronaut.speed=-astronaut.speed
+  }
+
+  if (astronaut.y.normal<=astronaut.y.min){
+    astronaut.speed=-astronaut.speed
+  }
 }
