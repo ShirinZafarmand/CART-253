@@ -59,49 +59,48 @@ function preload(){
 };
 
 
-
 function setup() {
   createCanvas(windowWidth,windowHeight);
   imageMode(CENTER);
-}
+};
 
 
 function draw() {
     background(bg.r,bg.g,bg.b);
 
-    //moon displaying
-    image(moon.image,moon.x,moon.y,moon.width,moon.height)
+    //displaying moon
+    image(moon.image,moon.x,moon.y,moon.width,moon.height);
 
     //transition to the different dimension
         // making the moon surface slowly disapear from the screen
         moon.y = moon.y + moon.movement;
 
         //making the screen a little more darker(for spookier effect)
-        bg.b = bg.b -1
+        bg.b = bg.b -1;
 
 
-        push()
+    push()
     // if the moon is outside of the canvas the black hole apears rotating around itself
         if (moon.y >= 1700){
           translate(1500,800);
           rotate(blackHole.angle);
-          image(blackHole.image,blackHole.x,blackHole.y,blackHole.width,blackHole.height)
+          image(blackHole.image,blackHole.x,blackHole.y,blackHole.width,blackHole.height);
           blackHole.angle=blackHole.angle+0.05;
-          blackHole.height=blackHole.height+blackHole.varticalExpansion
-          blackHole.width=blackHole.width+blackHole.horizontalExpansion
-          blackHole.width=constrain(blackHole.width,10,1500)
-          blackHole.height=constrain(blackHole.height,10,1500)
+          blackHole.height=blackHole.height+blackHole.varticalExpansion;
+          blackHole.width=blackHole.width+blackHole.horizontalExpansion;
+          blackHole.width=constrain(blackHole.width,10,1500);
+          blackHole.height=constrain(blackHole.height,10,1500);
         }
-        pop()
+    pop()
 
 
     //astronaut display
     imageMode(CENTER)
-    image(astronaut.image,astronaut.x,astronaut.y.normal,astronaut.width,astronaut.height)
+    image(astronaut.image,astronaut.x,astronaut.y.normal,astronaut.width,astronaut.height);
 
 
     //astronaut hover mode
-    astronaut.y.normal= astronaut.y.normal+ astronaut.speed
+    astronaut.y.normal= astronaut.y.normal+ astronaut.speed;
 
     if (astronaut.hover= true &&
       astronaut.y.normal>=astronaut.y.max){
@@ -114,9 +113,5 @@ function draw() {
       }
 
   //blackhole absorbtion
-  let d =dist(blackHole.x,blackHole.y,astronaut.x,astronaut.y.normal)/10
-
-
-
 
 }
