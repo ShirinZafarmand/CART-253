@@ -6,6 +6,12 @@ Pippin Barr
 
 Here is a description of this template p5 project.
 **************************************************/
+let bg={
+  r:24,
+  g:18,
+  b:110,
+};
+
 let astronaut={
   x:1200,
   y:{
@@ -33,10 +39,14 @@ let moon={
   image:undefined,
 };
 
+
+
 function preload(){
   astronaut.image=loadImage("assets/images/astronaut.png");
   moon.image=loadImage("assets/images/moon2.png");
 };
+
+
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
@@ -66,5 +76,5 @@ function draw() {
         astronaut.y.normal<=astronaut.y.min){
           astronaut.speed=-astronaut.speed
         }
-        
+
 }
