@@ -6,6 +6,14 @@ Pippin Barr
 
 Here is a description of this template p5 project.
 **************************************************/
+let mic;
+let r;
+
+// Angle and angular velocity, accleration
+let theta;
+let theta_vel;
+let theta_acc;
+
 let bg={
   r:24,
   g:18,
@@ -13,22 +21,13 @@ let bg={
 };
 
 let astronaut={
-  x:1200,
-  y:{
-    max:650,
-    min:450,
-    normal:550
+  size:70,
+  shrink:0.01,
+  fill:{
+    r:245,
+    g:203,
+    b:66,
   },
-  width:500,
-  height:300,
-  vx:0,
-  vy:0,
-  ax:0,
-  ay:0,
-  speed:1,
-  fill:{ r:0, g:0, b:0},
-  image:undefined,
-  hover: true,
 };
 
 let moon={
@@ -41,8 +40,8 @@ let moon={
 };
 
 let blackHole={
-  x:1500,
-  y:800,
+  x:0,
+  y:0,
   width:10,
   height:10,
   image:undefined,
@@ -52,8 +51,8 @@ let blackHole={
   angle:0,
 };
 
+
 function preload(){
-  astronaut.image=loadImage("assets/images/astronaut.png");
   moon.image=loadImage("assets/images/moon2.png");
   blackHole.image=loadImage("assets/images/blackHole.png");
 };
@@ -62,56 +61,77 @@ function preload(){
 function setup() {
   createCanvas(windowWidth,windowHeight);
   imageMode(CENTER);
+
+  mic= new p5.AudioIn();
+  mic.start();
+
+  // Initializing all values for the absorption towards the blackhole
+  r = height * 0.45;
+  theta = 0;
+  theta_vel = 0;
+  theta_acc = 0.0001/2;
 };
 
 
 function draw() {
-    background(bg.r,bg.g,bg.b);
+  background(bg.r,bg.g,bg.b);
 
-    //displaying moon
-    image(moon.image,moon.x,moon.y,moon.width,moon.height);
+  //displaying moon
+  image(moon.image,moon.x,moon.y,moon.width,moon.height);
 
-    //transition to the different dimension
-        // making the moon surface slowly disapear from the screen
-        moon.y = moon.y + moon.movement;
+  //transition to the different dimension
+     // making the moon surface slowly disapear from the screen
+     moon.y = moon.y + moon.movement;
 
-        //making the screen a little more darker(for spookier effect)
-        bg.b = bg.b -1;
-
-
-    push()
-    // if the moon is outside of the canvas the black hole apears rotating around itself
-        if (moon.y >= 1700){
-          translate(1500,800);
-          rotate(blackHole.angle);
-          image(blackHole.image,blackHole.x,blackHole.y,blackHole.width,blackHole.height);
-          blackHole.angle=blackHole.angle+0.05;
-          blackHole.height=blackHole.height+blackHole.varticalExpansion;
-          blackHole.width=blackHole.width+blackHole.horizontalExpansion;
-          blackHole.width=constrain(blackHole.width,10,1500);
-          blackHole.height=constrain(blackHole.height,10,1500);
-        }
-    pop()
+     //making the screen a little more darker(for spookier effect)
+     bg.b = bg.b -1;
 
 
-    //astronaut display
-    imageMode(CENTER)
-    image(astronaut.image,astronaut.x,astronaut.y.normal,astronaut.width,astronaut.height);
+  // if the moon is outside of the canvas the black hole apears rotating around itself
+  push()
+  if (moon.y >= 1700){
+    translate(width / 2, height / 2);
+    rotate(blackHole.angle);
+    image(blackHole.image,blackHole.x,blackHole.y,blackHole.width,blackHole.height);
+    // blackhole rotation
+    blackHole.angle=blackHole.angle+0.02;
+    //the feeling o blackhole getting closer
+    blackHole.height=blackHole.height+blackHole.varticalExpansion;
+    blackHole.width=blackHole.width+blackHole.horizontalExpansion;
+    //constraing blackholes size
+    blackHole.width=constrain(blackHole.width,10,1500);
+    blackHole.height=constrain(blackHole.height,10,1500);
+  }
+  pop()
 
 
-    //astronaut hover mode
-    astronaut.y.normal= astronaut.y.normal+ astronaut.speed;
+  //mic input
+  let level = mic.getLevel();
 
-    if (astronaut.hover= true &&
-      astronaut.y.normal>=astronaut.y.max){
-        astronaut.speed=-astronaut.speed
-      }
-
-    if (astronaut.hover= true &&
-      astronaut.y.normal<=astronaut.y.min){
-        astronaut.speed=-astronaut.speed
-      }
+  //converting the level into the distance between the user and the blackhole
+  let movement = map( level,0,1,0,110)
+  r = r + movement
 
   //blackhole absorbtion
+  push()
+  // Translate the origin point to the center of the screen
+  translate(width / 2, height / 2);
+  // Converting polar to cartesian
+  let x = r * cos(theta);
+  let y = r * sin(theta);
+  //decreasing the distance between the astronaut and the blackhole
+  r = r - 0.3
+  //shrinking astronauts size to have a diving effect
+  astronaut.size=astronaut.size-astronaut.shrink
 
+  // Draw the astronaut at the cartesian coordinate
+  ellipseMode(CENTER);
+  noStroke();
+  fill(astronaut.fill.r,astronaut.fill.g,astronaut.fill.b);
+  ellipse(x,y,astronaut.size);
+  pop()
+
+  // Applying acceleration and velocity to angle
+  theta_vel += theta_acc /2;
+  theta += theta_vel /2;
 }
