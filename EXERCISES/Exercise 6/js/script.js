@@ -49,6 +49,7 @@ let blackHole={
   angle:0,
   varticalExpansion:1,
   horizontalExpansion:1,
+  angle:0,
 };
 
 function preload(){
@@ -61,6 +62,7 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
+  imageMode(CENTER);
 }
 
 
@@ -78,14 +80,20 @@ function draw() {
         bg.b = bg.b -1
 
 
-    // if the moon is outside of the canvas the black hole apears
+        push()
+    // if the moon is outside of the canvas the black hole apears rotating around itself
         if (moon.y >= 1700){
+          translate(1500,800);
+          rotate(blackHole.angle);
           image(blackHole.image,blackHole.x,blackHole.y,blackHole.width,blackHole.height)
+          blackHole.angle=blackHole.angle+0.05;
           blackHole.height=blackHole.height+blackHole.varticalExpansion
           blackHole.width=blackHole.width+blackHole.horizontalExpansion
           blackHole.width=constrain(blackHole.width,10,1500)
           blackHole.height=constrain(blackHole.height,10,1500)
         }
+        pop()
+
 
     //astronaut display
     imageMode(CENTER)
@@ -104,6 +112,9 @@ function draw() {
       astronaut.y.normal<=astronaut.y.min){
         astronaut.speed=-astronaut.speed
       }
+
+  //blackhole absorbtion
+  let d =dist(blackHole.x,blackHole.y,astronaut.x,astronaut.y.normal)/10
 
 
 
