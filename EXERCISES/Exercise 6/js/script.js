@@ -37,13 +37,24 @@ let moon={
   width:3100,
   height:1500,
   image:undefined,
+  movement:1,
 };
 
-
+let blackHole={
+  x:1500,
+  y:800,
+  width:10,
+  height:10,
+  image:undefined,
+  angle:0,
+  varticalExpansion:1,
+  horizontalExpansion:1,
+};
 
 function preload(){
   astronaut.image=loadImage("assets/images/astronaut.png");
   moon.image=loadImage("assets/images/moon2.png");
+  blackHole.image=loadImage("assets/images/blackHole.png");
 };
 
 
@@ -59,6 +70,23 @@ function draw() {
     //moon displaying
     image(moon.image,moon.x,moon.y,moon.width,moon.height)
 
+    //transition to the different dimension
+        // making the moon surface slowly disapear from the screen
+        moon.y = moon.y + moon.movement;
+
+        //making the screen a little more darker(for spookier effect)
+        bg.b = bg.b -1
+
+
+    // if the moon is outside of the canvas the black hole apears
+        if (moon.y >= 1700){
+          image(blackHole.image,blackHole.x,blackHole.y,blackHole.width,blackHole.height)
+          blackHole.height=blackHole.height+blackHole.varticalExpansion
+          blackHole.width=blackHole.width+blackHole.horizontalExpansion
+          blackHole.width=constrain(blackHole.width,10,1500)
+          blackHole.height=constrain(blackHole.height,10,1500)
+        }
+
     //astronaut display
     imageMode(CENTER)
     image(astronaut.image,astronaut.x,astronaut.y.normal,astronaut.width,astronaut.height)
@@ -72,9 +100,12 @@ function draw() {
         astronaut.speed=-astronaut.speed
       }
 
-      if (astronaut.hover= true &&
-        astronaut.y.normal<=astronaut.y.min){
-          astronaut.speed=-astronaut.speed
-        }
+    if (astronaut.hover= true &&
+      astronaut.y.normal<=astronaut.y.min){
+        astronaut.speed=-astronaut.speed
+      }
+
+
+
 
 }
