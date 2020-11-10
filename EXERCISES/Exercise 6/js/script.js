@@ -1,10 +1,13 @@
 "use strict";
 
 /**************************************************
-Template p5 project
-Pippin Barr
+Exercise 6- p5.sound use on project 2
+shirin zafarmand
 
-Here is a description of this template p5 project.
+my main project consists of 4 different stages. one of them is when the astronaut (here represented as a yellow circle)
+faces a blackhole as has to run away from it by the simple 3rd Einstein physics role that every force creates another force
+with the same amount but in the opposite direction. in this simulation the users voice is THE force. the atronaut is slowly
+disapearing the in black hole and the only thing that can save it, is the users mic!
 **************************************************/
 let mic;
 let r;
@@ -22,7 +25,7 @@ let bg={
 
 let astronaut={
   size:70,
-  shrink:0.01,
+  shrink:0.03,
   fill:{
     r:245,
     g:203,
@@ -51,6 +54,7 @@ let blackHole={
   angle:0,
 };
 
+let state ='title';
 
 function preload(){
   moon.image=loadImage("assets/images/moon2.png");
@@ -61,6 +65,9 @@ function preload(){
 function setup() {
   createCanvas(windowWidth,windowHeight);
   imageMode(CENTER);
+
+  textSize(32);
+  textAlign(CENTER,CENTER);
 
   mic= new p5.AudioIn();
   mic.start();
@@ -89,7 +96,7 @@ function draw() {
 
   // if the moon is outside of the canvas the black hole apears rotating around itself
   push()
-  if (moon.y >= 1700){
+  if (moon.y >= 1500){
     translate(width / 2, height / 2);
     rotate(blackHole.angle);
     image(blackHole.image,blackHole.x,blackHole.y,blackHole.width,blackHole.height);
@@ -109,7 +116,7 @@ function draw() {
   let level = mic.getLevel();
 
   //converting the level into the distance between the user and the blackhole
-  let movement = map( level,0,1,0,110)
+  let movement = map( level,0,1,0,150)
   r = r + movement
 
   //blackhole absorbtion
@@ -132,6 +139,27 @@ function draw() {
   pop()
 
   // Applying acceleration and velocity to angle
-  theta_vel += theta_acc /2;
-  theta += theta_vel /2;
+  theta_vel =theta_vel+ theta_acc /2;
+  theta = theta + theta_vel ;
+
+  //check if sucked by the blackhole
+  if (r<= 10){
+    astronaut.size=0;
+    state ='lose'
+  }
+
+  if (state === 'lose'){
+    fill(255);
+    text('oh no! too late' ,width/2,height/2);
+  };
+
+  //check if survived
+  if (r>= 700){
+    state ='win'
+  }
+
+  if (state === 'win'){
+    fill(255);
+    text('made it!' ,width/2,height/2);
+  };
 }
