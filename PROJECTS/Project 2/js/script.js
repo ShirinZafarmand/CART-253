@@ -12,8 +12,8 @@ let bg={
   b:110,
 };
 
-let trashSquad=[];
-let squadSize=50;
+let trashes=[];
+let numTrashes=50;
 
 let astronaut={
   x:1200,
@@ -32,7 +32,7 @@ let astronaut={
   fill:{ r:0, g:0, b:0},
   image:undefined,
   hover: true,
-};
+}
 
 let moon={
   x:1500,
@@ -48,7 +48,7 @@ let surface={
   width:400,
   height: 100,
   speed:-3,
-}
+};
 
 let timer={
   x:0,
@@ -70,48 +70,22 @@ function setup() {
   createCanvas(windowWidth,windowHeight);
 
   //tarshes
-  for (let i = 0; i < squadSize; i++){
-    trashSquad[i]= createTrash(random(0,width),random(0,height));
-  };
-};
-
-function createTrash(x,y){
-  let trash={
-    x:x,
-    y:y,
-    size:55,
-    vx:0,
-    vy:0,
-    speed:3,
-    shrink:3,
-    fill:{
-      r:235,
-      g:180,
-      b:52}
+  for (let i = 0; i<numTrashes; i++){
+    let x=random(0,width);
+    let y= random(0,height);
+    let trash = new Trash(x,y);
+    trashes.push(trash)
     };
-    return trash;
   };
+
 
   function draw() {
     background(bg.r,bg.g,bg.b);
 
-    for (let i = 0; i<trashSquad.length; i++){
-      let trash=trashSquad[i];
-      //bees movements and display
-      moveTrash(trash);
-
-      //bees encounter with user
-      tarshUserEncounter(trash);
-
-      //displaying bees
-      displayTrash(trash);
-    };
 
     //timer diaplay
     displayTimer();
 
-    //checking the time user has left
-    timerCheck();
 
     //moon displaying
     image(moon.image,moon.x,moon.y,moon.width,moon.height)
@@ -150,50 +124,28 @@ function createTrash(x,y){
         if (keyIsDown(38)){
           astronaut.y.normal=astronaut.y.normal-4
         }
-      }
 
-
-      //trashes' movements
-      function moveTrash(trash){
-        let change=random(0,20)
-        if (change<0.5){
-          trash.vx=random(-trash.speed,trash.speed);
-          trash.vy=random(-trash.speed,trash.speed);
+        //trash
+        for( let i=0; i < trashes.length; i++){
+          let trash = trashes[i];
+          if (trash.active){
+            //trashes' movements
+            trash.move();
+            //displaying trashes
+            trash.display();
+            //collecting the space trashes
+            trash.tarshUserEncounter();
+            //remove the trashes when the times over
+            trash.removal()
+          };
         };
-
-        trash.x=trash.x+trash.vx;
-        trash.y=trash.y+trash.vy;
-
-        trash.x=constrain(trash.x,0,width);
-        trash.y=constrain(trash.y,0,height);
       };
 
-      //displaying trashes
-      function displayTrash(trash){
-        push();
-        fill(235, 180, 52);
-        ellipse(trash.x,trash.y,trash.size);
-        pop();
-      };
 
-      //collecting the space trashes
-      function tarshUserEncounter(trash){
-        let d =dist(trash.x,trash.y,astronaut.x,astronaut.y.normal)
-        if(d<80){
-          trash.size=0;
-        }
-      };
 
       //displaying timer
       function displayTimer(){
         fill(timer.fill);
         rect(timer.x,timer.y,timer.width,timer.height);
         timer.height=timer.height-timer.shrink;
-      };
-
-      //the time that user has for collecting trashes
-      function timerCheck(){
-        if(timer.height<=0){
-          squadSize===0
-        };
       };

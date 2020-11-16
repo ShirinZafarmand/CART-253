@@ -36,7 +36,7 @@ class Aliens{
       b:88},
     this.alien3.angle=0,
   }
-
+}
   displayAlien1(){
     push();
     translate(1100,550);
