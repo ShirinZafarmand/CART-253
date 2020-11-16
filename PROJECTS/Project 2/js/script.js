@@ -65,16 +65,18 @@ let spaceship={
   width:0,
   height:0,
   image:undefined,
-  expansion:2,
+  expansion:1,
   shift:500,
 };
 
 let weapon1={
-  x:700,
-  y:450,
   fill:255,
   size:100
 }
+//let weapon1xLocations = [700, 200, 1700];
+//let weapon1yLocation = [400,500,200];
+
+let weapon1Locations = [{x: 0, y: 0}, {x: 50, y: 0}, {x: 150, y: 150}];
 
 function preload(){
   astronaut.image=loadImage("assets/images/astronaut.png");
@@ -201,7 +203,14 @@ function draw() {
       image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
   };
 
-
+  //displaying the  2 weapons that are hidden under spaceships
+  if (spaceship.width>= 450){
+    push();
+    fill(255);
+    ellipse(random(weapon1Locations),weapon1.size)
+    pop();
+  };
+}
 
 
 
