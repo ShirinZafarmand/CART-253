@@ -49,8 +49,5 @@ class Trash{
      if(timer.height <= 0){
        this.size=0;
      };
-   }
-
-
-
+  }
 }
