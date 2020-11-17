@@ -4,7 +4,8 @@
 Project 2-prototype stage
 Shirin Zafarmand
 
-Here is a description of this template p5 project.
+In this exercise I completed the second section of my Project 2. Here the astronaut needs to find the hidden weapon inside a random spaceship. this weapon is a key to survive next stage.
+when the spaceships apear, click on the screen to hear the guiding signal that gets lower when the astronaut get nearer to the weapon.
 **************************************************/
 let trashes=[];
 let numTrashes=50;
@@ -89,6 +90,7 @@ let weapon1={
 let weapon1Locations = [{x: 0, y: 0}, {x: 50, y: 0}, {x: 150, y: 150}];
 
 
+
 function preload(){
   astronaut.image=loadImage("assets/images/astronaut.png");
   moon.image=loadImage("assets/images/moon2.png");
@@ -112,7 +114,8 @@ function setup() {
     let trash = new Trash(x,y);
     trashes.push(trash)
   };
-};
+}
+
 
 
 function draw() {
@@ -245,8 +248,7 @@ function draw() {
       image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
       image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
   };
-};
-
+}
 
 
 function playOscillator() {
