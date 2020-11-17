@@ -6,14 +6,19 @@ Shirin Zafarmand
 
 Here is a description of this template p5 project.
 **************************************************/
+let trashes=[];
+let numTrashes=50;
+
+let osc;
+let playing;
+let freq;
+let amp;
+
 let bg={
   r:24,
   g:18,
   b:110,
 };
-
-let trashes=[];
-let numTrashes=50;
 
 let astronaut={
   x:1200,
@@ -65,28 +70,40 @@ let spaceship={
   width:0,
   height:0,
   image:undefined,
-  expansion:1,
+  expansion:0.5,
   shift:500,
 };
 
 let weapon1={
-  fill:255,
+  fill:{
+    r:24,
+    g:18,
+    b:110,
+  },
+  x:200,
+  y:750,
   size:100
 }
 //let weapon1xLocations = [700, 200, 1700];
 //let weapon1yLocation = [400,500,200];
-
 let weapon1Locations = [{x: 0, y: 0}, {x: 50, y: 0}, {x: 150, y: 150}];
+
 
 function preload(){
   astronaut.image=loadImage("assets/images/astronaut.png");
   moon.image=loadImage("assets/images/moon2.png");
-  spaceship.image=loadImage("assets/images/spaceship.png")
+  spaceship.image=loadImage("assets/images/spaceship.png");
 };
 
 
 function setup() {
-  createCanvas(windowWidth,windowHeight);
+  let cnv=createCanvas(windowWidth,windowHeight);
+  userStartAudio();
+  cnv.mousePressed(playOscillator);
+  osc = new p5.Oscillator('sine');
+
+  textSize(32);
+  textAlign(CENTER,CENTER);
 
   //tarshes
   for (let i = 0; i<numTrashes; i++){
@@ -104,9 +121,8 @@ function draw() {
   //timer diaplay
   displayTimer();
 
-  //moon displaying
+  //moon display
   image(moon.image,moon.x,moon.y,moon.width,moon.height)
-
 
 
   //astronaut display
@@ -155,9 +171,31 @@ function draw() {
       trash.display();
       //collecting the space trashes
       trash.tarshUserEncounter();
-      //remove the trashes when the times over
+      //removing the trashes when the times over
       trash.removal()
     };
+  };
+
+
+  //displaying the weapon that is hidden under a spaceship
+  if (spaceship.width>= 450){
+    push();
+    noStroke();
+    fill(weapon1.fill.r,weapon1.fill.g,weapon1.fill.b);
+    ellipse(weapon1.x,weapon1.y,weapon1.size)
+    pop();
+  };
+
+
+  //when the astronaut gets closer to the weapon, the sound gets higher
+  let d=dist(astronaut.x,astronaut.y.normal,weapon1.x,weapon1.y);
+
+  freq = constrain(map(d, 0, 2000, 100, 500), 100, 500);
+  amp = constrain(map(d, 0,2000, 0, 1), 0, 1);
+
+  if (playing) {
+  osc.freq(freq, 0.1);
+  osc.amp(amp, 0.1);
   };
 
 
@@ -165,7 +203,7 @@ function draw() {
     if (timer.height <= 0){
 
       //making spaceships apear slowly
-      spaceship.width=spaceship.width+spaceship.expansion+1
+      spaceship.width=spaceship.width+spaceship.expansion+0.25
       spaceship.height=spaceship.height+spaceship.expansion
 
       spaceship.width=constrain(spaceship.width,0,450)
@@ -202,17 +240,14 @@ function draw() {
       image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
       image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
   };
-
-  //displaying the  2 weapons that are hidden under spaceships
-  if (spaceship.width>= 450){
-    push();
-    fill(255);
-    ellipse(random(weapon1Locations),weapon1.size)
-    pop();
-  };
-}
+};
 
 
+
+function playOscillator() {
+  osc.start();
+  playing = true;
+};
 
   //displaying timer
   function displayTimer(){
