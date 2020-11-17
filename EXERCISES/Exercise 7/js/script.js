@@ -85,9 +85,7 @@ let weapon1={
   y:750,
   size:100
 }
-//let weapon1xLocations = [700, 200, 1700];
-//let weapon1yLocation = [400,500,200];
-let weapon1Locations = [{x: 0, y: 0}, {x: 50, y: 0}, {x: 150, y: 150}];
+
 
 
 
