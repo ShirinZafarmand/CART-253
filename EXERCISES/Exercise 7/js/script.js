@@ -72,6 +72,7 @@ let spaceship={
   height:0,
   image:undefined,
   expansion:0.5,
+  shrink:0.5,
   shift:500,
 };
 
@@ -201,7 +202,8 @@ function draw() {
 
 
   if (d<=50){
-    text('Weapon Collected' ,width/2,height/2)
+    text('Weapon Collected' ,width/2,height/2);
+    spaceship.width = 0
   }
 
 

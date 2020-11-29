@@ -54,18 +54,26 @@ let blackHole={
   angle:0,
 };
 
+let astronaut1={
+  width:300,
+  height:190,
+  fill:{ r:0, g:0, b:0},
+  image:undefined,
+  shrink:0.05,
+}
+
 let state ='title';
 
 function preload(){
   moon.image=loadImage("assets/images/moon2.png");
   blackHole.image=loadImage("assets/images/blackHole.png");
+  astronaut1.image=loadImage("assets/images/astronaut.png");
 };
 
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
   imageMode(CENTER);
-
   textSize(32);
   textAlign(CENTER,CENTER);
 
@@ -85,6 +93,7 @@ function draw() {
 
   //displaying moon
   image(moon.image,moon.x,moon.y,moon.width,moon.height);
+
 
   //transition to the different dimension
      // making the moon surface slowly disapear from the screen
@@ -116,8 +125,9 @@ function draw() {
   let level = mic.getLevel();
 
   //converting the level into the distance between the user and the blackhole
-  let movement = map( level,0,1,0,150)
+  let movement = map( level,0,1,0,70)
   r = r + movement
+
 
   //blackhole absorbtion
   push()
@@ -129,14 +139,12 @@ function draw() {
   //decreasing the distance between the astronaut and the blackhole
   r = r - 0.3
   //shrinking astronauts size to have a diving effect
-  astronaut.size=astronaut.size-astronaut.shrink
+  astronaut1.width=astronaut1.width-astronaut1.shrink
+  astronaut1.height=astronaut1.height-astronaut1.shrink
+
 
   // Draw the astronaut at the cartesian coordinate
-  ellipseMode(CENTER);
-  noStroke();
-  fill(astronaut.fill.r,astronaut.fill.g,astronaut.fill.b);
-  ellipse(x,y,astronaut.size);
-  pop()
+  image(astronaut1.image,x,y,astronaut1.width,astronaut1.height)
 
   // Applying acceleration and velocity to angle
   theta_vel =theta_vel+ theta_acc /2;
