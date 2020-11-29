@@ -6,6 +6,8 @@ Pippin Barr
 
 Here is a description of this template p5 project.
 **************************************************/
+let alien;
+
 let bg={
   r:24,
   g:18,
@@ -41,6 +43,10 @@ function setup() {
   imageMode(CENTER);
   textSize(32);
   textAlign(CENTER,CENTER);
+  noStroke();
+
+  //constrictiong the Aliens
+  alien= new Aliens();
 }
 
 
@@ -50,17 +56,22 @@ function draw() {
   //displaying moon
   image(moon.image,moon.x,moon.y,moon.width,moon.height);
 
-  // Draw the astronaut at the cartesian coordinate
+  // Draw the astronaut
   image(astronaut.image,astronaut.x,astronaut.y,astronaut.width,astronaut.height);
 
-  //constrictiong the Aliens
-  let alien= new Aliens();
+  //absorbing the astronaut to the senter of the screen
+  let dx = dist(astronaut.x,astronaut.y,width/2,height/2)
+  let horizentalMovement= dx/100
+  astronaut.x=astronaut.x+dx/100
+
 
   //displaying Aliens
   push();
   alien.displayAlien1();
   alien.displayAlien2();
   alien.displayAlien3();
+  alien.displayAlien4();
+  alien.displayAlien5();
   pop();
 
 }
