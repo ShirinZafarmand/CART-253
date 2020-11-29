@@ -203,7 +203,9 @@ function draw() {
 
   if (d<=50){
     text('Weapon Collected' ,width/2,height/2);
-    spaceship.width = 0
+    spaceship.x = spaceship.x - 3;
+    weapon1.size=0;
+    playing = false;
   }
 
 
@@ -214,8 +216,8 @@ function draw() {
       spaceship.width=spaceship.width+spaceship.expansion+0.25
       spaceship.height=spaceship.height+spaceship.expansion
 
-      spaceship.width=constrain(spaceship.width,0,450)
-      spaceship.height=constrain(spaceship.height,0,300)
+      spaceship.width=constrain(spaceship.width,0,300)
+      spaceship.height=constrain(spaceship.height,0,200)
 
 
       image(spaceship.image,spaceship.x,spaceship.y,spaceship.width,spaceship.height)
@@ -254,7 +256,8 @@ function draw() {
 function playOscillator() {
   osc.start();
   playing = true;
-};
+};az
+
 
 
   //displaying timer
