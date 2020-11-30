@@ -83,6 +83,7 @@ function draw() {
   //shooting the arrow
   shootingArrow();
 
+
   //displaying Aliens
   push();
   alien.displayAlien1();
@@ -90,7 +91,12 @@ function draw() {
   alien.displayAlien3();
   alien.displayAlien4();
   alien.displayAlien5();
+  alien.displayAlien6();
+  alien.displayAlien7();
   pop();
+
+  //checkif the the bilet touches Aliens
+  alien.checkAttack();
 }
 
 function aimingArrow(){
@@ -113,13 +119,18 @@ function arrowDisplay(){
 
 function shootingArrow(){
   arrow.height=arrow.height+arrow.expansion;
-  if(arrow.height>1000){
-  noLoop();
+  arrow.height=arrow.height-arrow.reduction;
+  if(arrow.height>900){
+    arrow.height=80
+    bg.b=0;
  }
 };
 
 //shoot the arrow
 function keyPressed(){
   if (keyCode===38){
-    arrow.expansion=750}
+    arrow.height=1000}
+
+  if (keyCode===40){
+    arrow.height=80}
   };
