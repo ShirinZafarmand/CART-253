@@ -7,6 +7,7 @@ Pippin Barr
 Here is a description of this template p5 project.
 **************************************************/
 let alien;
+var onOff;
 
 let bg={
   r:24,
@@ -31,6 +32,8 @@ let astronaut={
   fill:{ r:0, g:0, b:0},
   image:undefined,
   shrink:0.05,
+  tremble:0.1,
+  state:true,
 }
 
 let arrow={
@@ -59,7 +62,7 @@ function setup() {
 
   //constrictiong the Aliens
   alien= new Aliens();
-}
+};
 
 
 function draw() {
@@ -72,7 +75,24 @@ function draw() {
   image(moon.image,moon.x,moon.y,moon.width,moon.height);
 
   // Draw the astronaut
-  image(astronaut.image,astronaut.x,astronaut.y,astronaut.width,astronaut.height);
+  push();
+  //make the astronaut tremble from the troubling signals radiates by aliens
+  if(onOff==true){
+    translate(random(-astronaut.tremble,astronaut.tremble),random(-astronaut.tremble,astronaut.tremble));
+  }
+    astronaut.tremble=astronaut.tremble+0.01
+  if ( astronaut.state==true){
+    image(astronaut.image,astronaut.x,astronaut.y,astronaut.width,astronaut.height);
+  }
+  if(onOff==true){
+    onOff=false;
+  }
+  else{onOff=true;
+  };
+  pop();
+
+  //if the user doesn't kill the aliens, the astronaut explodes
+  astronautExplosion();
 
   //arrow
   arrowDisplay();
@@ -97,7 +117,8 @@ function draw() {
 
   //checkif the the bilet touches Aliens
   alien.checkAttack();
-}
+};
+
 
 function aimingArrow(){
   if (keyIsDown(37)){
@@ -123,14 +144,19 @@ function shootingArrow(){
   if(arrow.height>900){
     arrow.height=80
     bg.b=0;
- }
+  };
 };
 
 //shoot the arrow
 function keyPressed(){
   if (keyCode===38){
     arrow.height=1000}
-
-  if (keyCode===40){
-    arrow.height=80}
   };
+
+
+function astronautExplosion(){
+  if (astronaut.tremble>=20){
+    text('oh no',width/2,height/2);
+    astronaut.state=false;
+  };
+};
