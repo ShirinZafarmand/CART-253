@@ -134,43 +134,8 @@ function draw() {
       //moon display
       image(moon.image,moon.x,moon.y,moon.width,moon.height);
 
-      if (astronaut.state=true){
-        //astronaut display
-        imageMode(CENTER);
-        image(astronaut.image,astronaut.x,astronaut.y.normal,astronaut.width,astronaut.height);
-
-        //astronaut hover mode
-        astronaut.y.normal= astronaut.y.normal+ astronaut.speed;
-
-        if (astronaut.hover= true &&
-          astronaut.y.normal>=astronaut.y.max){
-            astronaut.speed=-astronaut.speed;
-          };
-
-          if (astronaut.hover= true &&
-            astronaut.y.normal<=astronaut.y.min){
-              astronaut.speed=-astronaut.speed;
-            };
-
-
-            //user control
-            if (keyIsDown(39)){
-              astronaut.x=astronaut.x+5;
-            };
-
-            if (keyIsDown(37)){
-              astronaut.x=astronaut.x-5;
-            };
-
-            if (keyIsDown(40)){
-              astronaut.y.normal=astronaut.y.normal+4
-            };
-
-            if (keyIsDown(38)){
-              astronaut.y.normal=astronaut.y.normal-4
-            };
-          };
-
+      //astronaut displaying
+      astronautMovement()
 
           //trash
           for( let i=0; i < trashes.length; i++){
@@ -193,12 +158,20 @@ function draw() {
 
         //second stage instructions
         else if(state==='title2'){
+          background(bg.r,bg.g,bg.b);
+
           stageOne=false;
           text('Instructions + press key 2',width/2,height/2);
         }
 
         //second stage display
         else if(state==='secondStage'){
+          background(bg.r,bg.g,bg.b);
+
+          image(moon.image,moon.x,moon.y,moon.width,moon.height);
+
+          //astronaut displaying
+          astronautMovement()
 
           //making spaceships apear slowly
           spaceship.width=spaceship.width+spaceship.expansion+0.25;
@@ -223,7 +196,6 @@ function draw() {
             pop();
           };
 
-
           //when the astronaut gets closer to the weapon, the sound gets higher
           let d=dist(astronaut.x,astronaut.y.normal,weapon1.x,weapon1.y);
 
@@ -242,7 +214,7 @@ function draw() {
             weapon1.size=0;
             playing = false;
           };
-      };
+     };
 }
 
           function playOscillator() {
@@ -307,3 +279,42 @@ function draw() {
               image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
               image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
             };
+
+          function astronautMovement(){
+            if (astronaut.state=true){
+              //astronaut display
+              imageMode(CENTER);
+              image(astronaut.image,astronaut.x,astronaut.y.normal,astronaut.width,astronaut.height);
+
+              //astronaut hover mode
+              astronaut.y.normal= astronaut.y.normal+ astronaut.speed;
+
+              if (astronaut.hover= true &&
+                astronaut.y.normal>=astronaut.y.max){
+                  astronaut.speed=-astronaut.speed;
+                };
+
+              if (astronaut.hover= true &&
+                astronaut.y.normal<=astronaut.y.min){
+                  astronaut.speed=-astronaut.speed;
+                };
+
+
+                  //user control
+                  if (keyIsDown(39)){
+                    astronaut.x=astronaut.x+5;
+                  };
+
+                  if (keyIsDown(37)){
+                    astronaut.x=astronaut.x-5;
+                  };
+
+                  if (keyIsDown(40)){
+                    astronaut.y.normal=astronaut.y.normal+4
+                  };
+
+                  if (keyIsDown(38)){
+                    astronaut.y.normal=astronaut.y.normal-4
+                  };
+                };
+          }
