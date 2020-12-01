@@ -37,8 +37,8 @@ let astronaut={
   speed:1,
   fill:{ r:0, g:0, b:0},
   image:undefined,
-  hover: true,
-}
+  state:true,
+};
 
 let moon={
   x:1500,
@@ -66,12 +66,12 @@ let timer={
 };
 
 let spaceship={
-  x:200,
+  x:3600,
   y:200,
   width:0,
   height:0,
   image:undefined,
-  expansion:0.5,
+  expansion:0.25,
   shrink:0.5,
   shift:500,
 };
@@ -84,11 +84,11 @@ let weapon1={
   },
   x:200,
   y:750,
-  size:100
-}
+  size:100,
+};
 
-
-
+let state ='title1';
+let stageOne=true;
 
 function preload(){
   astronaut.image=loadImage("assets/images/astronaut.png");
@@ -111,158 +111,199 @@ function setup() {
     let x=random(0,width);
     let y= random(0,height);
     let trash = new Trash(x,y);
-    trashes.push(trash)
+    trashes.push(trash);
   };
 }
 
 
 
 function draw() {
-  background(bg.r,bg.g,bg.b);
-
-  //timer diaplay
-  displayTimer();
-
-  //moon display
-  image(moon.image,moon.x,moon.y,moon.width,moon.height)
-
-
-  //astronaut display
-  imageMode(CENTER)
-  image(astronaut.image,astronaut.x,astronaut.y.normal,astronaut.width,astronaut.height)
-
-  //astronaut hover mode
-  astronaut.y.normal= astronaut.y.normal+ astronaut.speed
-
-  if (astronaut.hover= true &&
-    astronaut.y.normal>=astronaut.y.max){
-      astronaut.speed=-astronaut.speed
-    }
-
-  if (astronaut.hover= true &&
-    astronaut.y.normal<=astronaut.y.min){
-      astronaut.speed=-astronaut.speed
-    }
-
-
-  //user control
-  if (keyIsDown(39)){
-    astronaut.x=astronaut.x+5;
+  //stage one instructions
+  if(state==='title1'){
+    fill(0,0,0);
+    text('instructions + press key 1',width/2,height/2);
   }
 
-  if (keyIsDown(37)){
-    astronaut.x=astronaut.x-5;
-  }
+    // display stage 1
+    else if(state==='stageOne' && stageOne===true){
+      background(bg.r,bg.g,bg.b);
 
-  if (keyIsDown(40)){
-    astronaut.y.normal=astronaut.y.normal+4
-  }
+      //timer diaplay
+      displayTimer();
 
-  if (keyIsDown(38)){
-    astronaut.y.normal=astronaut.y.normal-4
-  }
+      //moon display
+      image(moon.image,moon.x,moon.y,moon.width,moon.height);
 
+      if (astronaut.state=true){
+        //astronaut display
+        imageMode(CENTER);
+        image(astronaut.image,astronaut.x,astronaut.y.normal,astronaut.width,astronaut.height);
 
-  //trash
-  for( let i=0; i < trashes.length; i++){
-    let trash = trashes[i];
-    if (trash.active){
-      //trashes' movements
-      trash.move();
-      //displaying trashes
-      trash.display();
-      //collecting the space trashes
-      trash.tarshUserEncounter();
-      //removing the trashes when the times over
-      trash.removal()
-    };
-  };
+        //astronaut hover mode
+        astronaut.y.normal= astronaut.y.normal+ astronaut.speed;
 
+        if (astronaut.hover= true &&
+          astronaut.y.normal>=astronaut.y.max){
+            astronaut.speed=-astronaut.speed;
+          };
 
-  //displaying the weapon that is hidden under a spaceship
-  if (spaceship.width>= 450){
-    push();
-    noStroke();
-    fill(weapon1.fill.r,weapon1.fill.g,weapon1.fill.b);
-    ellipse(weapon1.x,weapon1.y,weapon1.size)
-    pop();
-  };
+          if (astronaut.hover= true &&
+            astronaut.y.normal<=astronaut.y.min){
+              astronaut.speed=-astronaut.speed;
+            };
 
 
-  //when the astronaut gets closer to the weapon, the sound gets higher
-  let d=dist(astronaut.x,astronaut.y.normal,weapon1.x,weapon1.y);
+            //user control
+            if (keyIsDown(39)){
+              astronaut.x=astronaut.x+5;
+            };
 
-  freq = constrain(map(d, 0, 1000, 100, 500), 100, 500);
-  amp = constrain(map(d, 0, 1000, 0, 1), 0, 1);
+            if (keyIsDown(37)){
+              astronaut.x=astronaut.x-5;
+            };
 
-  if (playing) {
-  osc.freq(freq, 0.1);
-  osc.amp(amp, 0.1);
-  };
+            if (keyIsDown(40)){
+              astronaut.y.normal=astronaut.y.normal+4
+            };
 
-
-  if (d<=50){
-    text('Weapon Collected' ,width/2,height/2);
-    spaceship.x = spaceship.x - 3;
-    weapon1.size=0;
-    playing = false;
-  }
-
-
-  //spaceship display
-    if (timer.height <= 0){
-
-      //making spaceships apear slowly
-      spaceship.width=spaceship.width+spaceship.expansion+0.25
-      spaceship.height=spaceship.height+spaceship.expansion
-
-      spaceship.width=constrain(spaceship.width,0,300)
-      spaceship.height=constrain(spaceship.height,0,200)
+            if (keyIsDown(38)){
+              astronaut.y.normal=astronaut.y.normal-4
+            };
+          };
 
 
-      image(spaceship.image,spaceship.x,spaceship.y,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+          //trash
+          for( let i=0; i < trashes.length; i++){
+            let trash = trashes[i];
+            if (trash.active){
+              //trashes' movements
+              trash.move();
+              //displaying trashes
+              trash.display();
+              //collecting the space trashes
+              trash.tarshUserEncounter();
+              //removing the trashes when the times over
+              trash.removal();
+            };
+          };
 
-      image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+          secondStageState();
+        }
 
-      image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
 
-      image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+        //second stage instructions
+        else if(state==='title2'){
+          stageOne=false;
+          text('Instructions + press key 2',width/2,height/2);
+        }
 
-      image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+        //second stage display
+        else if(state==='secondStage'){
 
-      image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
-      image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
-  };
+          //making spaceships apear slowly
+          spaceship.width=spaceship.width+spaceship.expansion+0.25;
+          spaceship.height=spaceship.height+spaceship.expansion;
+
+          //spaceships moving to the left
+          spaceship.x=spaceship.x-4;
+          spaceship.x=constrain(spaceship.x,250,5000);
+
+          spaceship.width=constrain(spaceship.width,0,300);
+          spaceship.height=constrain(spaceship.height,0,200);
+
+          //spaceship display
+          spaceshipImage();
+
+          //displaying the weapon that is hidden under a spaceship
+          if (spaceship.width>= 450){
+            push();
+            noStroke();
+            fill(weapon1.fill.r,weapon1.fill.g,weapon1.fill.b);
+            ellipse(weapon1.x,weapon1.y,weapon1.size)
+            pop();
+          };
+
+
+          //when the astronaut gets closer to the weapon, the sound gets higher
+          let d=dist(astronaut.x,astronaut.y.normal,weapon1.x,weapon1.y);
+
+          freq = constrain(map(d, 0, 1000, 100, 500), 100, 500);
+          amp = constrain(map(d, 0, 1000, 0, 1), 0, 1);
+
+          if (playing) {
+            osc.freq(freq, 0.1);
+            osc.amp(amp, 0.1);
+          };
+
+
+          if (d<=50){
+            text('Weapon Collected' ,width/2,height/2);
+            spaceship.x = spaceship.x - 3;
+            weapon1.size=0;
+            playing = false;
+          };
+      };
 }
 
+          function playOscillator() {
+            osc.start();
+            playing = true;
+          };
 
-function playOscillator() {
-  osc.start();
-  playing = true;
-};az
+          function keyPressed(){
+            if (keyCode===38){
+              arrow.height=1000;
+            }
+              else if(keyCode===49){
+                state='stageOne';
+              }
+              else if(keyCode===50){
+                state='secondStage';
+              }
+            };
 
+            //displaying timer
+            function displayTimer(){
+              fill(timer.fill);
+              rect(timer.x,timer.y,timer.width,timer.height);
+              timer.height=timer.height-timer.shrink;
+            };
 
+            //second stage state
+            function secondStageState(){
+              if(timer.height<=0){
+                state='title2';
+              };
+            };
 
-  //displaying timer
-  function displayTimer(){
-    fill(timer.fill);
-    rect(timer.x,timer.y,timer.width,timer.height);
-    timer.height=timer.height-timer.shrink;
-  };
+            function spaceshipImage(){
+              image(spaceship.image,spaceship.x,spaceship.y,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+
+              image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+
+              image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+
+              image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+
+              image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+
+              image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
+              image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+            };
