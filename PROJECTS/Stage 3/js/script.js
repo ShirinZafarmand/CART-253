@@ -6,8 +6,15 @@ Pippin Barr
 
 Here is a description of this template p5 project.
 **************************************************/
-let alien;
+let bulletsFired = [];
+let targetBalloons = [];
+let turPosX = 1490;
+let turPosY = 590;
 var onOff;
+let aliens=[];
+let numAliens= 7;
+let x1=600;
+let x2=610;
 
 let bg={
   r:24,
@@ -23,6 +30,7 @@ let moon={
   image:undefined,
   movement:1,
 };
+
 
 let astronaut={
   x:1490,
@@ -59,9 +67,16 @@ function setup() {
   textSize(32);
   textAlign(CENTER,CENTER);
   noStroke();
+  angleMode(DEGREES);
 
   //constrictiong the Aliens
-  alien= new Aliens();
+  for( let i=0; i <numAliens; i++){
+    let x=random(x1,x2);
+    x1=x1+150
+    x2=x2+200
+    let alien = new Alien(x);
+    aliens.push(alien);
+  }
 };
 
 
@@ -74,9 +89,56 @@ function draw() {
   //displaying moon
   image(moon.image,moon.x,moon.y,moon.width,moon.height);
 
-  // Draw the astronaut
-  push();
   //make the astronaut tremble from the troubling signals radiates by aliens
+  astronautTrembling()
+
+  //if the user doesn't kill the aliens, the astronaut explodes
+  astronautExplosion();
+
+
+  for (var i = 0; i < bulletsFired.length; i++){
+    let bullet=bulletsFired[i]
+    //displaying bulletsFired
+    bullet.display();
+    bullet.update();
+    //check if the attack was succesfull
+    bullet.checkAttack();
+  };
+
+
+  for( let i=0; i<aliens.length; i++){
+    let alien=aliens[i];
+      //displaying Aliens
+      alien.display();
+  };
+};
+
+
+function astronautExplosion(){
+  if (astronaut.tremble>=20){
+    text('oh no',width/2,height/2);
+    astronaut.state=false;
+  };
+};
+
+
+function mousePressed(){
+	let mouseVector = getMouseVector();
+	let oneBullet = new bullet(mouseVector.x, mouseVector.y);
+	bulletsFired.push(oneBullet);
+};
+
+
+function getMouseVector(){
+	let mouseXalt = mouseX - turPosX;
+	let mouseYalt = mouseY - turPosY;
+	let mouseDir = createVector(mouseXalt, mouseYalt);
+	mouseDir.normalize();
+	return mouseDir;
+};
+
+function astronautTrembling(){
+  push();
   if(onOff==true){
     translate(random(-astronaut.tremble,astronaut.tremble),random(-astronaut.tremble,astronaut.tremble));
   }
@@ -90,73 +152,4 @@ function draw() {
   else{onOff=true;
   };
   pop();
-
-  //if the user doesn't kill the aliens, the astronaut explodes
-  astronautExplosion();
-
-  //arrow
-  arrowDisplay();
-
-  //aiming a lover
-  aimingArrow();
-
-  //shooting the arrow
-  shootingArrow();
-
-
-  //displaying Aliens
-  push();
-  alien.displayAlien1();
-  alien.displayAlien2();
-  alien.displayAlien3();
-  alien.displayAlien4();
-  alien.displayAlien5();
-  alien.displayAlien6();
-  alien.displayAlien7();
-  pop();
-
-  //checkif the the bilet touches Aliens
-  alien.checkAttack();
-};
-
-
-function aimingArrow(){
-  if (keyIsDown(37)){
-    arrow.rotation=0.1;
-    arrow.angle=arrow.angle+arrow.rotation}
-    else if(keyIsDown(39)){
-      arrow.rotation=-0.1;
-      arrow.angle=arrow.angle+arrow.rotation}
-    };
-
-function arrowDisplay(){
-  push();
-  translate(1510,640);
-  rotate(arrow.angle);
-  fill(255);
-  rect(arrow.x,arrow.y,arrow.width,arrow.height);
-  pop();
-};
-
-function shootingArrow(){
-  arrow.height=arrow.height+arrow.expansion;
-  arrow.height=arrow.height-arrow.reduction;
-  if(arrow.height>900){
-    arrow.height=80
-    bg.b=0;
-  };
-};
-
-//shoot the arrow
-function keyPressed(){
-  if (keyCode===38){
-    arrow.height=1000}
-  };
-
-
-function astronautExplosion(){
-  if (astronaut.tremble>=20){
-    text('oh no',width/2,height/2);
-    astronaut.state=false;
-  };
-};
+}
