@@ -44,17 +44,6 @@ let astronaut={
   state:true,
 }
 
-let arrow={
-  x:0,
-  y:0,
-  width:10,
-  height:80,
-  angle:0,
-  rotation:0,
-  fill:255,
-  expansion:0,
-  reduction:0
-};
 
 function preload(){
   moon.image=loadImage("assets/images/moon2.png");
