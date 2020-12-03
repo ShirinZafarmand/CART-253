@@ -15,6 +15,25 @@ let playing;
 let freq;
 let amp;
 
+let bulletsFired = [];
+let targetBalloons = [];
+let turPosX = 1490;
+let turPosY = 590;
+var onOff;
+let aliens=[];
+let numAliens= 7;
+let x1=600;
+let x2=610;
+
+let mic;
+let r;
+
+// Angle and angular velocity, accleration
+let theta;
+let theta_vel;
+let theta_acc;
+
+
 let bg={
   r:24,
   g:18,
@@ -23,11 +42,13 @@ let bg={
 
 let astronaut={
   x:1200,
+  stage3x:1490,
   y:{
     max:650,
     min:450,
     normal:550
   },
+  stage3y:590,
   width:500,
   height:300,
   vx:0,
@@ -38,7 +59,9 @@ let astronaut={
   fill:{ r:0, g:0, b:0},
   image:undefined,
   state:true,
+  shrink:0.05,
 };
+
 
 let moon={
   x:1500,
@@ -46,6 +69,7 @@ let moon={
   width:3100,
   height:1500,
   image:undefined,
+  movement:1,
 };
 
 let surface={
@@ -87,13 +111,27 @@ let weapon1={
   size:100,
 };
 
+let blackHole={
+  x:0,
+  y:0,
+  width:10,
+  height:10,
+  image:undefined,
+  angle:0,
+  varticalExpansion:1,
+  horizontalExpansion:1,
+  angle:0,
+};
+
 let state ='title1';
 let stageOne=true;
+let stageTwo=true;
 
 function preload(){
   astronaut.image=loadImage("assets/images/astronaut.png");
   moon.image=loadImage("assets/images/moon2.png");
   spaceship.image=loadImage("assets/images/spaceship.png");
+  blackHole.image=loadImage("assets/images/blackhole.png");
 };
 
 
@@ -105,6 +143,8 @@ function setup() {
 
   textSize(32);
   textAlign(CENTER,CENTER);
+  angleMode(DEGREES);
+  noStroke();
 
   //tarshes
   for (let i = 0; i<numTrashes; i++){
@@ -113,6 +153,24 @@ function setup() {
     let trash = new Trash(x,y);
     trashes.push(trash);
   };
+
+  //Aliens
+  for( let i=0; i <numAliens; i++){
+    let x=random(x1,x2);
+    x1=x1+150
+    x2=x2+200
+    let alien = new Alien(x);
+    aliens.push(alien);
+  }
+
+  mic= new p5.AudioIn();
+  mic.start();
+
+  // Initializing all values for the absorption towards the blackhole
+  r = height * 0.45;
+  theta = 0;
+  theta_vel = 0;
+  theta_acc = 0.0001/2;
 }
 
 
@@ -152,7 +210,7 @@ function draw() {
             };
           };
 
-          secondStageState();
+          secondStageCondition();
         }
 
 
@@ -209,12 +267,153 @@ function draw() {
 
 
           if (d<=50){
-            text('Weapon Collected' ,width/2,height/2);
+            state='title3'
+
             spaceship.x = spaceship.x - 3;
             weapon1.size=0;
-            playing = false;
+
           };
-     };
+     }
+
+     else if(state==='title3'){
+       background(bg.r,bg.g,bg.b);
+       text('instructions + Weapon Collected + press key 3' ,width/2,height/2);
+       playing = false;
+     }
+
+     else if(state==='thirdStage'){
+       background(bg.r,bg.g,bg.b);
+
+       // making the moon surface slowly disapear from the screen
+       moon.y = moon.y + moon.movement;
+
+       //displaying moon
+       image(moon.image,moon.x,moon.y,moon.width,moon.height);
+
+       //displaying astronauts image
+       if (astronaut.state=true){
+         //astronaut display
+         imageMode(CENTER);
+         image(astronaut.image,astronaut.stage3x,astronaut.stage3y,astronaut.width,astronaut.height);
+       }
+
+
+       //make the astronaut tremble from the troubling signals radiates by aliens
+       astronautTrembling()
+
+       //if the user doesn't kill the aliens, the astronaut explodes
+       astronautExplosion();
+
+
+       for (var i = 0; i < bulletsFired.length; i++){
+         let bullet=bulletsFired[i]
+         //displaying bulletsFired
+         bullet.display();
+         bullet.update();
+         for (let j=0; j<aliens.length; j++){
+           let alien = aliens[j];
+           //check if the attack was succesfull
+           bullet.checkAttack(alien);
+         }
+       };
+
+
+       for( let i=0; i<aliens.length; i++){
+         let alien=aliens[i];
+           //displaying Aliens
+           alien.display();
+       };
+     }
+
+     else if(state==='title4'){
+       background(bg.r,bg.g,bg.b);
+       text('instructions + press key 4' ,width/2,height/2);
+     }
+
+     else if(state==='fourthStage'){
+       background(bg.r,bg.g,bg.b);
+
+       //displaying moon
+       image(moon.image,moon.x,moon.y,moon.width,moon.height);
+
+       //transition to the different dimension
+          // making the moon surface slowly disapear from the screen
+          moon.y = moon.y + moon.movement;
+
+          //making the screen a little more darker(for spookier effect)
+          bg.b = bg.b -1;
+
+
+       // if the moon is outside of the canvas the black hole apears rotating around itself
+       push()
+       if (moon.y >= 1500){
+         translate(width / 2, height / 2);
+         angleMode(RADIANS);
+         rotate(blackHole.angle);
+         image(blackHole.image,blackHole.x,blackHole.y,blackHole.width,blackHole.height);
+         // blackhole rotation
+         blackHole.angle=blackHole.angle+0.02;
+         //the feeling o blackhole getting closer
+         blackHole.height=blackHole.height+blackHole.varticalExpansion;
+         blackHole.width=blackHole.width+blackHole.horizontalExpansion;
+         //constraing blackholes size
+         blackHole.width=constrain(blackHole.width,10,1500);
+         blackHole.height=constrain(blackHole.height,10,1500);
+       }
+       pop()
+
+
+       //mic input
+       let level = mic.getLevel();
+
+       //converting the level into the distance between the user and the blackhole
+       let movement = map( level,0,1,0,70)
+       r = r + movement
+
+
+       //blackhole absorbtion
+       push()
+       // Translate the origin point to the center of the screen
+       translate(width / 2, height / 2);
+       // Converting polar to cartesian
+       let x = r * cos(theta);
+       let y = r * sin(theta);
+       //decreasing the distance between the astronaut and the blackhole
+       r = r - 0.3
+       //shrinking astronauts size to have a diving effect
+       astronaut.width=astronaut.width-2*astronaut.shrink
+       astronaut.height=astronaut.height-astronaut.shrink
+
+       // Draw the astronaut at the cartesian coordinate
+       astronaut.x=x
+       astronaut.y=y
+       image(astronaut.image,x,y,astronaut.width,astronaut.height)
+
+       // Applying acceleration and velocity to angle
+       theta_vel =theta_vel+ theta_acc /2;
+       theta = theta + theta_vel ;
+
+       //check if sucked by the blackhole
+       if (r<= 10){
+         astronaut.size=0;
+         state ='lose'
+       }
+
+       if (state === 'lose'){
+         fill(255);
+         text('oh no! too late' ,width/2,height/2);
+       };
+
+       //check if survived
+       if (r>= 700){
+         state ='win'
+       }
+
+       if (state === 'win'){
+         fill(255);
+         text('made it!' ,width/2,height/2);
+       };
+     }
 }
 
           function playOscillator() {
@@ -223,16 +422,19 @@ function draw() {
           };
 
           function keyPressed(){
-            if (keyCode===38){
-              arrow.height=1000;
-            }
-              else if(keyCode===49){
+             if(keyCode===49){
                 state='stageOne';
-              }
+            }
               else if(keyCode===50){
                 state='secondStage';
               }
+              else if(keyCode===51){
+                state='thirdStage';
+              }
+              else if(keyCode===52){
+                state='fourthStage';
             };
+          }
 
             //displaying timer
             function displayTimer(){
@@ -242,7 +444,7 @@ function draw() {
             };
 
             //second stage state
-            function secondStageState(){
+            function secondStageCondition(){
               if(timer.height<=0){
                 state='title2';
               };
@@ -317,4 +519,42 @@ function draw() {
                     astronaut.y.normal=astronaut.y.normal-4
                   };
                 };
+          }
+
+          function astronautExplosion(){
+            if (astronaut.tremble>=20){
+              text('oh no',width/2,height/2);
+              astronaut.state=false;
+            };
+          };
+
+
+          function mousePressed(){
+          	let mouseVector = getMouseVector();
+          	let oneBullet = new bullet(mouseVector.x, mouseVector.y);
+          	bulletsFired.push(oneBullet);
+          };
+
+
+          function getMouseVector(){
+          	let mouseXalt = mouseX - turPosX;
+          	let mouseYalt = mouseY - turPosY;
+          	let mouseDir = createVector(mouseXalt, mouseYalt);
+          	mouseDir.normalize();
+          	return mouseDir;
+          };
+
+          function astronautTrembling(){
+            push();
+            if(onOff==true){
+              translate(random(-astronaut.tremble,astronaut.tremble),random(-astronaut.tremble,astronaut.tremble));
+            }
+              astronaut.tremble=astronaut.tremble+0.01
+
+            if(onOff==true){
+              onOff=false;
+            }
+            else{onOff=true;
+            };
+            pop();
           }
