@@ -1,20 +1,21 @@
 class Alien{
 
-  constructor(){
+  constructor(x,rotationSpeed){
     //Aliens
-      this.x=250;
+      this.x=x;
       this.y=0;
       this.size=70;
       this.r=14;
       this.g=0;
       this.b=65;
       this.angle=0;
-      this.rotationSpeed= 0.01
+      this.rotationSpeed= rotationSpeed;
   };
 
 
   display(){
     push();
+    angleMode(RADIANS);
     // Center of rotation is the centre of the canvas
     translate(width / 2, height / 2);
     // Rotate the circle around this
@@ -24,7 +25,6 @@ class Alien{
     fill(this.r,this.g,this.b);
     ellipse(0,0,this.size);
     pop();
-    translate(this.x, this.y);
     this.angle += this.rotationSpeed;
   };
 

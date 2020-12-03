@@ -8,13 +8,13 @@ Here is a description of this template p5 project.
 **************************************************/
 let bulletsFired = [];
 let targetBalloons = [];
-let turPosX = 1490;
-let turPosY = 590;
+let turPosX = 1600;
+let turPosY = 800;
 var onOff;
 let aliens=[];
-let numAliens= 2;
-let x1=600;
-let x2=610;
+let numAliens= 7;
+let x1=250;
+let x2=260;
 
 let bg={
   r:24,
@@ -60,7 +60,11 @@ function setup() {
 
   //constrictiong the Aliens
   for( let i=0; i <numAliens; i++){
-    let alien = new Alien();
+    let x=random(x1,x2)
+    x1=x1+100
+    x2=x2+100
+    let rotationSpeed=random(0.01,0.03)
+    let alien = new Alien(x,rotationSpeed);
     aliens.push(alien);
   }
 };
@@ -99,8 +103,6 @@ function draw() {
         //check if the attack was succesful
         alien.mouseOverCircle(bullet);
      }
-
-
   };
 };
 
