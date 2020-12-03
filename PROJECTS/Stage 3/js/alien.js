@@ -25,4 +25,12 @@ class Alien{
     this.alienDisplayCondition= this.alienDisplayCondition + 1
     pop();
   };
+
+
+  theSpot(){
+    push();
+    fill(255,0,0);
+    ellipse(this.x,this.y,50)
+    pop();
+  }
 };

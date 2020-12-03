@@ -12,7 +12,7 @@ let turPosX = 1490;
 let turPosY = 590;
 var onOff;
 let aliens=[];
-let numAliens= 7;
+let numAliens= 1;
 let x1=600;
 let x2=610;
 
@@ -101,8 +101,11 @@ function draw() {
     //displaying bulletsFired
     bullet.display();
     bullet.update();
-    //check if the attack was succesfull
-    bullet.checkAttack();
+    for (let j=0; j<aliens.length; j++){
+      let alien = aliens[j];
+      //check if the attack was succesfull
+      bullet.checkAttack(alien);
+    }
   };
 
 
@@ -110,6 +113,7 @@ function draw() {
     let alien=aliens[i];
       //displaying Aliens
       alien.display();
+      alien.theSpot();
   };
 };
 

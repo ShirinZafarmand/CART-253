@@ -23,9 +23,9 @@ class bullet{
   };
 
 
-  checkAttack(){
-    let d= dist(this.x,this.y,aliens.x,aliens.y)
-    if (d<=this.size/2+aliens.size/2){
+  checkAttack(alien){
+    let d= dist(this.x,this.y,alien.x,alien.y)
+    if (d<=this.size/2+alien.size/2){
       noLoop();
     };
   };
