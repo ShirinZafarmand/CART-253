@@ -12,7 +12,7 @@ let turPosX = 1490;
 let turPosY = 590;
 var onOff;
 let aliens=[];
-let numAliens= 1;
+let numAliens= 2;
 let x1=600;
 let x2=610;
 
@@ -33,8 +33,8 @@ let moon={
 
 
 let astronaut={
-  x:1490,
-  y:590,
+  x:0,
+  y:0,
   width:500,
   height:300,
   fill:{ r:0, g:0, b:0},
@@ -60,10 +60,7 @@ function setup() {
 
   //constrictiong the Aliens
   for( let i=0; i <numAliens; i++){
-    let x=random(x1,x2);
-    x1=x1+150
-    x2=x2+200
-    let alien = new Alien(x);
+    let alien = new Alien();
     aliens.push(alien);
   }
 };
@@ -90,11 +87,6 @@ function draw() {
     //displaying bulletsFired
     bullet.display();
     bullet.update();
-    for (let j=0; j<aliens.length; j++){
-      let alien = aliens[j];
-      //check if the attack was succesfull
-      bullet.checkAttack(alien);
-    }
   };
 
 
@@ -102,7 +94,13 @@ function draw() {
     let alien=aliens[i];
       //displaying Aliens
       alien.display();
-      alien.theSpot();
+      for (let j = 0; j < bulletsFired.length; j++) {
+        let bullet=bulletsFired[j]
+        //check if the attack was succesful
+        alien.mouseOverCircle(bullet);
+     }
+
+
   };
 };
 
@@ -137,6 +135,8 @@ function astronautTrembling(){
   }
     astronaut.tremble=astronaut.tremble+0.01
   if ( astronaut.state==true){
+    astronaut.x=width/2
+    astronaut.y=height/2
     image(astronaut.image,astronaut.x,astronaut.y,astronaut.width,astronaut.height);
   }
   if(onOff==true){
