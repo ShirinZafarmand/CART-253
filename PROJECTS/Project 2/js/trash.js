@@ -17,14 +17,17 @@ class Trash{
 
 
   move(){
+    //set a random position for trashes
     let change=random(0,20)
     if (change<0.5){
+      //set a random speed
       this.vx=random(-this.speed,this.speed);
       this.vy=random(-this.speed,this.speed);
     };
     this.x=this.x+this.vx;
     this.y=this.y+this.vy;
 
+    //constraing the trashes' position
     this.x=constrain(this.x,0,width);
     this.y=constrain(this.y,0,height);
      }
@@ -33,21 +36,19 @@ class Trash{
    display(){
     push();
     fill(235, 180, 52);
+    //displaying the tarshes
     ellipse(this.x,this.y,this.size);
     pop();
      }
 
 
     tarshUserEncounter(){
-    let d =dist(this.x,this.y,astronaut.x,astronaut.y.normal)
-    if(d<80){
-      this.size=0;
-    }
-  }
-
-   removal(){
-     if(timer.height <= 0){
-       this.size=0;
-     };
-  }
+      //measure the distance between the trash and the astronaut
+      let d =dist(this.x,this.y,astronaut.x,astronaut.y.normal)
+      //if the distance is less that this then the user has collected the trash
+      if(d<80){
+        this.size=0;
+        stage2Condition =stage2Condition-1
+      }
+   }
 }
