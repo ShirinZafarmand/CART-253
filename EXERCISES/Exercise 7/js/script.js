@@ -1,11 +1,10 @@
 "use strict";
 
 /**************************************************
-Project 2-prototype stage
+Project 2-
 Shirin Zafarmand
 
-In this exercise I completed the second section of my Project 2. Here the astronaut needs to find the hidden weapon inside a random spaceship. this weapon is a key to survive next stage.
-when the spaceships apear, click on the screen to hear the guiding signal that gets lower when the astronaut get nearer to the weapon.
+
 **************************************************/
 let trashes=[];
 let numTrashes=50;
@@ -88,7 +87,7 @@ let timer={
   width:30,
   height:2500,
   fill:255,
-  shrink:1,
+  shrink:2,
   state:false,
 };
 
@@ -126,6 +125,38 @@ let blackHole={
   angle:0,
 };
 
+let instruction1={
+  x:0,
+  y:0,
+  width:900,
+  height:400,
+  image:undefined,
+};
+
+let instruction2={
+  x:0,
+  y:0,
+  width:900,
+  height:400,
+  image:undefined,
+};
+
+let instruction3={
+  x:0,
+  y:0,
+  width:900,
+  height:400,
+  image:undefined,
+};
+
+let instruction4={
+  x:0,
+  y:0,
+  width:900,
+  height:400,
+  image:undefined,
+};
+
 let state ='title1';
 let stageOne=true;
 let stageTwo=true;
@@ -136,6 +167,10 @@ function preload(){
   moon.image=loadImage("assets/images/moon2.png");
   spaceship.image=loadImage("assets/images/spaceship.png");
   blackHole.image=loadImage("assets/images/blackhole.png");
+  instruction1.image=loadImage("assets/images/Instruction1.png");
+  instruction2.image=loadImage("assets/images/Instruction2.png");
+  instruction3.image=loadImage("assets/images/Instruction3.png");
+  instruction4.image=loadImage("assets/images/Instruction4.png");
 };
 
 //------------------------------------------SetUp---------------------------------------//
@@ -188,8 +223,11 @@ function draw() {
   //stage one instructions to follow
   if(state==='title1'){
     background(bg.r,bg.g,bg.b);
-    fill(0,0,0);
-    text('instructions + press key 1',width/2,height/2);
+    push();
+    imageMode(CENTER);
+    translate(width/2,height/2);
+    image(instruction1.image,instruction1.x,instruction1.y,instruction1.width,instruction1.height);
+    pop();
   }
 
   // stage 1 starts
@@ -235,7 +273,11 @@ function draw() {
   else if(state==='title2'){
     background(bg.r,bg.g,bg.b);
     stageOne=false;
-    text('Instructions + press key 2',width/2,height/2);
+    push();
+    imageMode(CENTER);
+    translate(width/2,height/2);
+    image(instruction2.image,instruction2.x,instruction2.y,instruction2.width,instruction2.height);
+    pop();
   }
 
   //stage 2 starts
@@ -247,6 +289,7 @@ function draw() {
 
     //displaying the timer that gets shorter gradually; indicating the time left for finding the weapon
     timer.state=true;
+    timer.shrink=1
     displayTimer();
 
     //displaying astronaut
@@ -305,7 +348,11 @@ function draw() {
   //--------------------------------------------------------stage three-------------------------------------------------------------//
   else if(state==='title3'){
     background(bg.r,bg.g,bg.b);
-    text('instructions + Weapon Collected + press key 3' ,width/2,height/2);
+    push();
+    imageMode(CENTER);
+    translate(width/2,height/2);
+    image(instruction3.image,instruction3.x,instruction3.y,instruction3.width,instruction3.height);
+    pop();
     playing = false;
   }
 
@@ -355,7 +402,11 @@ function draw() {
   //--------------------------------------------------------stage four-------------------------------------------------------------//
   else if(state==='title4'){
     background(bg.r,bg.g,bg.b);
-    text('instructions + press key 4' ,width/2,height/2);
+    push();
+    imageMode(CENTER);
+    translate(width/2,height/2);
+    image(instruction4.image,instruction4.x,instruction4.y,instruction4.width,instruction4.height);
+    pop();
   }
 
   //stage 3 starts
@@ -437,7 +488,7 @@ function draw() {
     if (r>= 700){
       background(bg.r,bg.g,bg.b);
       fill(255);
-      text('made it!' ,width/2,height/2);
+      text('I made it! You saved me my friend. wait... are you an alien too?.. cause your genuine help was out of this world ;) ' ,width/2,height/2);
     }
   }
 
@@ -589,7 +640,7 @@ function astronautMovement(){
       }
       astronaut.tremble=astronaut.tremble+0.01
       if (astronaut.state=true){
-        //displaying astronaut 
+        //displaying astronaut
         imageMode(CENTER);
         astronaut.x=width/2
         astronaut.y=height/2
