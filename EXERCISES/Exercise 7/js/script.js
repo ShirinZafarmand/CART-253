@@ -88,7 +88,7 @@ let timer={
   width:30,
   height:2500,
   fill:255,
-  shrink:8,
+  shrink:1,
   state:false,
 };
 
@@ -129,7 +129,7 @@ let blackHole={
 let state ='title1';
 let stageOne=true;
 let stageTwo=true;
-/////////////////////////////////////////////////////////////////////
+//------------------------------------------PreLoad---------------------------------------//
 
 function preload(){
   astronaut.image=loadImage("assets/images/astronaut.png");
@@ -138,7 +138,7 @@ function preload(){
   blackHole.image=loadImage("assets/images/blackhole.png");
 };
 
-///////////////////////////////////////////////////////////////////////
+//------------------------------------------SetUp---------------------------------------//
 function setup() {
   let cnv=createCanvas(windowWidth,windowHeight);
   userStartAudio();
@@ -150,7 +150,7 @@ function setup() {
   angleMode(DEGREES);
   noStroke();
 
-  //tarshes
+  //constructing tarshes
   for (let i = 0; i<numTrashes; i++){
     let x=random(0,width);
     let y= random(0,height);
@@ -158,7 +158,7 @@ function setup() {
     trashes.push(trash);
   };
 
-  //Aliens
+  //constructiong Aliens
   for( let i=0; i <numAliens; i++){
     let x=random(x1,x2)
     x1=x1+100
@@ -168,6 +168,7 @@ function setup() {
     aliens.push(alien);
   }
 
+  //microphone starts functioning
   mic= new p5.AudioIn();
   mic.start();
 
@@ -179,84 +180,91 @@ function setup() {
 }
 
 
-///////////////////////////////////////////////////////
+//------------------------------------------Draw---------------------------------------//
 function draw() {
-  //////////////////////////////////////////////stage1///////////////////////////////////////////////////////////
-  //stage one instructions
+
+
+  //--------------------------------------------------------stage one-------------------------------------------------------------//
+  //stage one instructions to follow
   if(state==='title1'){
+    background(bg.r,bg.g,bg.b);
     fill(0,0,0);
     text('instructions + press key 1',width/2,height/2);
   }
 
-  // display stage 1
+  // stage 1 starts
   else if(state==='stageOne' && stageOne===true){
     background(bg.r,bg.g,bg.b);
 
-    //timer diaplay
+    //displaying the timer that gets shorter gradually; indicating the time left for collecting 15 trashes
     timer.state=true;
     displayTimer();
 
-    //moon display
+    //dsiplaying the surface of moon
     image(moon.image,moon.x,moon.y,moon.width,moon.height);
 
-    //astronaut displaying
+    //displaying astronaut
     astronautMovement()
 
-    //trash
+    //displaying space trashes
     for( let i=0; i < trashes.length; i++){
       let trash = trashes[i];
       if (trash.active){
-        //trashes' movements
+        //trashes' random movements
         trash.move();
         //displaying trashes
         trash.display();
-        //collecting the space trashes
+        //when the astronaut collects the trash, it disapears
         trash.tarshUserEncounter();
       };
     };
 
+    //if the astronaut collect 15 trashes then stage 2 instructions apear
     if(stage2Condition<1){
       state='title2'
     }
+
+    //if the astronaut doesn't collect trashes in the given time, the game is over
     else if(timer.height<=0){
       state='gameOver'
     }
   }
 
-  //////////////////////////////////////////////stage2///////////////////////////////////////////////////////////
+  //--------------------------------------------------------stage two-------------------------------------------------------------//
   //second stage instructions
   else if(state==='title2'){
     background(bg.r,bg.g,bg.b);
-
     stageOne=false;
     text('Instructions + press key 2',width/2,height/2);
   }
 
-  //second stage display
+  //stage 2 starts
   else if(state==='secondStage'){
     background(bg.r,bg.g,bg.b);
 
+    //dsiplaying the surface of moon
     image(moon.image,moon.x,moon.y,moon.width,moon.height);
 
-    //timer diaplay
+    //displaying the timer that gets shorter gradually; indicating the time left for finding the weapon
     timer.state=true;
     displayTimer();
 
-    //astronaut displaying
+    //displaying astronaut
     astronautMovement()
 
-    //making spaceships apear slowly
+    //making spaceships' size bigger slowly
     spaceship.width=spaceship.width+spaceship.expansion+0.25;
     spaceship.height=spaceship.height+spaceship.expansion;
 
-    //spaceships moving to the left
-    spaceship.x=spaceship.x-4;
-    spaceship.x=constrain(spaceship.x,250,5000);
-
+    //constraining the size of the spaceships
     spaceship.width=constrain(spaceship.width,0,300);
     spaceship.height=constrain(spaceship.height,0,200);
 
-    //spaceship display
+    //making spaceships apear slowly from the right side of the screen
+    spaceship.x=spaceship.x-4;
+    spaceship.x=constrain(spaceship.x,250,5000);
+
+    //displaying spaceships images
     spaceshipImage();
 
     //displaying the weapon that is hidden under a spaceship
@@ -268,115 +276,124 @@ function draw() {
       pop();
     };
 
-    //when the astronaut gets closer to the weapon, the sound gets higher
+    //when the astronaut gets closer to the weapon, the sound gets lower
     let d=dist(astronaut.x,astronaut.y.normal,weapon1.x,weapon1.y);
 
+    //maping the distance into the frequency
     freq = constrain(map(d, 0, 1000, 100, 500), 100, 500);
     amp = constrain(map(d, 0, 1000, 0, 1), 0, 1);
 
+    //apply the sound effects when the audio is playing
     if (playing) {
       osc.freq(freq, 0.1);
       osc.amp(amp, 0.1);
     }
 
-
+    //if the astronaut find the weapon then the stage 3 instructions apear
     if (d<=50){
       state='title3'
       spaceship.x = spaceship.x - 3;
       weapon1.size=0;
     };
 
+    //if the astronaut doesn't find the weapon in the given time, the game is over
     if(timer.height<=1){
       state='gameOver'
     }
   }
 
-  //////////////////////////////////////////////stage3///////////////////////////////////////////////////////////
+  //--------------------------------------------------------stage three-------------------------------------------------------------//
   else if(state==='title3'){
     background(bg.r,bg.g,bg.b);
     text('instructions + Weapon Collected + press key 3' ,width/2,height/2);
     playing = false;
   }
 
+  //stage 2 starts
   else if(state==='thirdStage'){
     background(bg.r,bg.g,bg.b);
 
     // making the moon surface slowly disapear from the screen
     moon.y = moon.y + moon.movement;
 
-    //displaying moon
+    //displaying the surface of moon
     image(moon.image,moon.x,moon.y,moon.width,moon.height);
 
-    //make the astronaut tremble from the troubling signals radiates by aliens
+    //make the astronaut tremble from the troubling signals radiated by aliens
     astronautTrembling()
 
-    //if the user doesn't kill the aliens, the astronaut explodes
+    //if the user doesn't kill the aliens, the astronaut explodes and the game is over
     astronautExplosion();
 
-
-
+    //displaying bullets fired from the weapon
     for (var i = 0; i < bulletsFired.length; i++){
       let bullet=bulletsFired[i]
       //displaying bulletsFired
       bullet.display();
+      //bullets moving slightly slower when fired
       bullet.update();
     };
 
-
+    //displaying aliens that rotate around the astronaut
     for( let i=0; i<aliens.length; i++){
       let alien=aliens[i];
       //displaying Aliens
       alien.display();
       for (let j = 0; j < bulletsFired.length; j++) {
         let bullet=bulletsFired[j]
-        //check if the attack was succesful
-        alien.mouseOverCircle(bullet);
-     }
+        //check if the attack was succesful and the bullet hit the alien, if so make the alien dispear
+        alien.collision(bullet);
+      }
     };
 
+    //if the astronaut kills enough aliens then stage 3 instructions apear
     if(stage4Condition<=1){
-      state ='title4'
+      state ='title4';
     }
   }
 
-  //////////////////////////////////////////////stage4///////////////////////////////////////////////////////////
+  //--------------------------------------------------------stage four-------------------------------------------------------------//
   else if(state==='title4'){
     background(bg.r,bg.g,bg.b);
     text('instructions + press key 4' ,width/2,height/2);
   }
 
+  //stage 3 starts
   else if(state==='fourthStage'){
     background(bg.r,bg.g,bg.b);
 
-    //displaying moon
+    //displaying the surface of moon
     image(moon.image,moon.x,moon.y,moon.width,moon.height);
 
-    //transition to the different dimension
-    // making the moon surface slowly disapear from the screen
+    // making the moons surface slowly disapear from the screen
     moon.y = moon.y + moon.movement;
 
     //making the screen a little more darker(for spookier effect)
     bg.b = bg.b -1;
 
-
     // if the moon is outside of the canvas the black hole apears rotating around itself
     push()
     if (moon.y >= 1500){
+      //center of rotation is in the middle of the screen
       translate(width / 2, height / 2);
       angleMode(RADIANS);
+
+      //Rotate the blackhole around this
       rotate(blackHole.angle);
-      image(blackHole.image,blackHole.x,blackHole.y,blackHole.width,blackHole.height);
-      // blackhole rotation
       blackHole.angle=blackHole.angle+0.02;
-      //the feeling o blackhole getting closer
+
+      //displaying blackholes image
+      image(blackHole.image,blackHole.x,blackHole.y,blackHole.width,blackHole.height);
+
+      //the feeling of blackhole getting closer by enlarging the size of it
       blackHole.height=blackHole.height+blackHole.varticalExpansion;
       blackHole.width=blackHole.width+blackHole.horizontalExpansion;
-      //constraing blackholes size
+
+      //constraining the size of the blackhole
       blackHole.width=constrain(blackHole.width,10,1500);
       blackHole.height=constrain(blackHole.height,10,1500);
-    }
-    pop()
-
+    };
+    pop();
 
     //mic input
     let level = mic.getLevel();
@@ -385,36 +402,38 @@ function draw() {
     let movement = map( level,0,1,0,70)
     r = r + movement
 
-
     //blackhole absorbtion
     push()
-    // Translate the origin point to the center of the screen
+    // Translating the origin point to the center of the screen
     translate(width / 2, height / 2);
+
     // Converting polar to cartesian
     let x = r * cos(theta);
     let y = r * sin(theta);
-    //decreasing the distance between the astronaut and the blackhole
+
+    //decreasing the distance between the astronaut and the blackhole for absorption effect
     r = r - 0.3
+
     //shrinking astronauts size to have a diving effect
     astronaut.width=astronaut.width-2*astronaut.shrink
     astronaut.height=astronaut.height-astronaut.shrink
 
-    // Draw the astronaut at the cartesian coordinate
+    //Draw the astronaut at the cartesian coordinate
     astronaut.x=x
     astronaut.y=y
     image(astronaut.image,x,y,astronaut.width,astronaut.height)
 
-    // Applying acceleration and velocity to angle
+    //Applying acceleration and velocity to angle
     theta_vel =theta_vel+ theta_acc /2;
     theta = theta + theta_vel ;
 
-    //check if sucked by the blackhole
+    //if the blackhole sucked the astronaut, then the game is over
     if (r<= 10){
       astronaut.size=0;
       state ='gameOver'
     }
 
-    //check if survived
+    //if the astronaut is far from the blackhole then survives
     if (r>= 700){
       background(bg.r,bg.g,bg.b);
       fill(255);
@@ -422,17 +441,21 @@ function draw() {
     }
   }
 
+  //game over text
   else if (state==='gameOver'){
     background(bg.r,bg.g,bg.b);
     text('game over!' ,width/2,height/2);
   }
 }
 
-//////////////////////////////////////////////functions///////////////////////////////////////////////////////////
+
+
+//------------------------------------------------------------------------------------------------------------------------------//
 function playOscillator() {
   osc.start();
   playing = true;
 };
+
 
 function keyPressed(){
   if(keyCode===49){
@@ -449,6 +472,7 @@ function keyPressed(){
   };
 }
 
+
 //displaying timer
 function displayTimer(){
   if(timer.state==true){
@@ -458,7 +482,7 @@ function displayTimer(){
   }
 };
 
-
+//displaying spaceships image
 function spaceshipImage(){
   image(spaceship.image,spaceship.x,spaceship.y,spaceship.width,spaceship.height)
   image(spaceship.image,spaceship.x,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
@@ -491,6 +515,7 @@ function spaceshipImage(){
   image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
 };
 
+//displaying the astronaut
 function astronautMovement(){
   if (astronaut.state=true){
     //astronaut display
@@ -511,7 +536,7 @@ function astronautMovement(){
         };
 
 
-        //user control
+        //astronauts user control
         if (keyIsDown(39)){
           astronaut.x=astronaut.x+5;
         };
@@ -530,6 +555,8 @@ function astronautMovement(){
       };
     }
 
+
+    //astronaut explosion from the aliens signals
     function astronautExplosion(){
       if (astronaut.tremble>=20){
         text('oh no',width/2,height/2);
@@ -538,7 +565,7 @@ function astronautMovement(){
       };
     };
 
-
+    //a bullet is fired where the mouse was clicked
     function mousePressed(){
       let mouseVector = getMouseVector();
       let oneBullet = new bullet(mouseVector.x, mouseVector.y);
@@ -554,6 +581,7 @@ function astronautMovement(){
       return mouseDir;
     };
 
+    //astronauts trembling mode
     function astronautTrembling(){
       push();
       if(onOff==true){
@@ -561,7 +589,7 @@ function astronautMovement(){
       }
       astronaut.tremble=astronaut.tremble+0.01
       if (astronaut.state=true){
-        //astronaut display
+        //displaying astronaut 
         imageMode(CENTER);
         astronaut.x=width/2
         astronaut.y=height/2

@@ -18,9 +18,9 @@ class Alien{
     angleMode(RADIANS);
     // Center of rotation is the centre of the canvas
     translate(width / 2, height / 2);
-    // Rotate the circle around this
+    // Rotate the alien around this
     rotate(this.angle);
-    // Translate to draw the circle itself at its position relative to the centre
+    // Translate to draw the alien itself at its position relative to the centre
     translate(this.x, this.y);
     fill(this.r,this.g,this.b);
     ellipse(0,0,this.size);
@@ -29,16 +29,16 @@ class Alien{
   };
 
 
-  mouseOverCircle(bullet) {
-    // Calculate distance from the circle to the centre of rotation
-    let circleDistanceFromCentre = sqrt(pow(this.x, 2) + pow(this.y, 2));
+  collision(bullet) {
+    // Calculate distance from the alien to the centre of rotation
+    let alienDistanceFromCentre = sqrt(pow(this.x, 2) + pow(this.y, 2));
 
-    // Calculate the actual position of the circle on the canvas
-    let circleActualX = width / 2 + circleDistanceFromCentre * cos(this.angle);
-    let circleActualY = height / 2 + circleDistanceFromCentre * sin(this.angle);
+    // Calculate the actual position of the alien on the canvas
+    let alienActualX = width / 2 + alienDistanceFromCentre * cos(this.angle);
+    let alienActualY = height / 2 + alienDistanceFromCentre * sin(this.angle);
 
-    // Check if the mouse overlaps the circle's actual position
-    if (dist(bullet.x, bullet.y, circleActualX, circleActualY) < this.size) {
+    // Check if the bullet has attacked the alien
+    if (dist(bullet.x, bullet.y, alienActualX, alienActualY) < this.size) {
       this.size=0;
       stage4Condition=stage4Condition-1;
     }
