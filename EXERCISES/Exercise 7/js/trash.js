@@ -42,12 +42,7 @@ class Trash{
     let d =dist(this.x,this.y,astronaut.x,astronaut.y.normal)
     if(d<80){
       this.size=0;
+      stage2Condition =stage2Condition-1
     }
-  }
-
-   removal(){
-     if(timer.height <= 0){
-       this.size=0;
-     };
   }
 }

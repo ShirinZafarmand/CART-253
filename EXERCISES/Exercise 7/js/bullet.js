@@ -26,7 +26,7 @@ class bullet{
   checkAttack(alien){
     let d= dist(this.x,this.y,alien.x,alien.y)
     if (d<=this.size/2+alien.size/2){
-      state='title4';
+      noLoop();
     };
   };
 }

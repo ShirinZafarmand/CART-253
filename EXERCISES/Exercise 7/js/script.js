@@ -17,13 +17,13 @@ let amp;
 
 let bulletsFired = [];
 let targetBalloons = [];
-let turPosX = 1490;
-let turPosY = 590;
+let turPosX = 1600;
+let turPosY = 800;
 var onOff;
 let aliens=[];
 let numAliens= 7;
-let x1=600;
-let x2=610;
+let x1=250;
+let x2=260;
 
 let mic;
 let r;
@@ -32,6 +32,9 @@ let r;
 let theta;
 let theta_vel;
 let theta_acc;
+
+let stage4Condition=7
+let stage2Condition=15
 
 
 let bg={
@@ -42,13 +45,11 @@ let bg={
 
 let astronaut={
   x:1200,
-  stage3x:1490,
   y:{
     max:650,
     min:450,
     normal:550
   },
-  stage3y:590,
   width:500,
   height:300,
   vx:0,
@@ -60,7 +61,7 @@ let astronaut={
   image:undefined,
   state:true,
   shrink:0.05,
-  tremble:0.1,
+  tremble:0,
 };
 
 
@@ -159,10 +160,11 @@ function setup() {
 
   //Aliens
   for( let i=0; i <numAliens; i++){
-    let x=random(x1,x2);
-    x1=x1+150
-    x2=x2+200
-    let alien = new Alien(x);
+    let x=random(x1,x2)
+    x1=x1+100
+    x2=x2+100
+    let rotationSpeed=random(0.01,0.03)
+    let alien = new Alien(x,rotationSpeed);
     aliens.push(alien);
   }
 
@@ -193,7 +195,7 @@ function draw() {
     //timer diaplay
     timer.state=true;
     displayTimer();
-    
+
     //moon display
     image(moon.image,moon.x,moon.y,moon.width,moon.height);
 
@@ -210,12 +212,15 @@ function draw() {
         trash.display();
         //collecting the space trashes
         trash.tarshUserEncounter();
-        //removing the trashes when the times over
-        trash.removal();
       };
     };
 
-    secondStageCondition();
+    if(stage2Condition<1){
+      state='title2'
+    }
+    else if(timer.height<=0){
+      state='gameOver'
+    }
   }
 
   //////////////////////////////////////////////stage2///////////////////////////////////////////////////////////
@@ -272,16 +277,18 @@ function draw() {
     if (playing) {
       osc.freq(freq, 0.1);
       osc.amp(amp, 0.1);
-    };
+    }
 
 
     if (d<=50){
       state='title3'
-
       spaceship.x = spaceship.x - 3;
       weapon1.size=0;
-
     };
+
+    if(timer.height<=1){
+      state='gameOver'
+    }
   }
 
   //////////////////////////////////////////////stage3///////////////////////////////////////////////////////////
@@ -313,11 +320,6 @@ function draw() {
       //displaying bulletsFired
       bullet.display();
       bullet.update();
-      for (let j=0; j<aliens.length; j++){
-        let alien = aliens[j];
-        //check if the attack was succesfull
-        bullet.checkAttack(alien);
-      }
     };
 
 
@@ -325,7 +327,16 @@ function draw() {
       let alien=aliens[i];
       //displaying Aliens
       alien.display();
+      for (let j = 0; j < bulletsFired.length; j++) {
+        let bullet=bulletsFired[j]
+        //check if the attack was succesful
+        alien.mouseOverCircle(bullet);
+     }
     };
+
+    if(stage4Condition<=1){
+      state ='title4'
+    }
   }
 
   //////////////////////////////////////////////stage4///////////////////////////////////////////////////////////
@@ -447,12 +458,6 @@ function displayTimer(){
   }
 };
 
-//second stage state
-function secondStageCondition(){
-  if(timer.height<=0){
-    state='title2';
-  };
-};
 
 function spaceshipImage(){
   image(spaceship.image,spaceship.x,spaceship.y,spaceship.width,spaceship.height)
@@ -558,7 +563,9 @@ function astronautMovement(){
       if (astronaut.state=true){
         //astronaut display
         imageMode(CENTER);
-        image(astronaut.image,astronaut.stage3x,astronaut.stage3y,astronaut.width,astronaut.height);
+        astronaut.x=width/2
+        astronaut.y=height/2
+        image(astronaut.image,astronaut.x,astronaut.y,astronaut.width,astronaut.height);
       }
 
       if(onOff==true){

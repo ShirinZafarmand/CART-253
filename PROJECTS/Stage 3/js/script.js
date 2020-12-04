@@ -12,7 +12,7 @@ let turPosX = 1600;
 let turPosY = 800;
 var onOff;
 let aliens=[];
-let numAliens= 7;
+let numAliens= 1;
 let x1=250;
 let x2=260;
 

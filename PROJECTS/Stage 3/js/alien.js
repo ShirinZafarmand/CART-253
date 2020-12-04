@@ -39,7 +39,7 @@ class Alien{
 
     // Check if the mouse overlaps the circle's actual position
     if (dist(bullet.x, bullet.y, circleActualX, circleActualY) < this.size) {
-      bg.r=255
+      this.size=0
     }
     else {
       bg.r=0

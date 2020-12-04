@@ -1,28 +1,46 @@
 class Alien{
 
-  constructor(x){
+  constructor(x,rotationSpeed){
     //Aliens
       this.x=x;
-      this.y=50;
+      this.y=0;
       this.size=70;
       this.r=14;
       this.g=0;
       this.b=65;
-      this.angle=1;
-      this.active=true;
-      this.alienDisplayCondition=0.01/4
+      this.angle=0;
+      this.rotationSpeed= rotationSpeed;
   };
 
 
   display(){
     push();
-    translate(width/2,height/2);
+    angleMode(RADIANS);
+    // Center of rotation is the centre of the canvas
+    translate(width / 2, height / 2);
+    // Rotate the circle around this
     rotate(this.angle);
-    this.g= random(0,250);
+    // Translate to draw the circle itself at its position relative to the centre
+    translate(this.x, this.y);
     fill(this.r,this.g,this.b);
-    ellipse(this.x,this.y,this.size,this.size);
-    this.angle=this.angle+0.5;
-    this.alienDisplayCondition= this.alienDisplayCondition + 1
+    ellipse(0,0,this.size);
     pop();
+    this.angle += this.rotationSpeed;
   };
+
+
+  mouseOverCircle(bullet) {
+    // Calculate distance from the circle to the centre of rotation
+    let circleDistanceFromCentre = sqrt(pow(this.x, 2) + pow(this.y, 2));
+
+    // Calculate the actual position of the circle on the canvas
+    let circleActualX = width / 2 + circleDistanceFromCentre * cos(this.angle);
+    let circleActualY = height / 2 + circleDistanceFromCentre * sin(this.angle);
+
+    // Check if the mouse overlaps the circle's actual position
+    if (dist(bullet.x, bullet.y, circleActualX, circleActualY) < this.size) {
+      this.size=0;
+      stage4Condition=stage4Condition-1;
+    }
+  }
 };
