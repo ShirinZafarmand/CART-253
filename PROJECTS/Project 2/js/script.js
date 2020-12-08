@@ -88,8 +88,6 @@ let timer={
 };
 
 let spaceship={
-  x:3600,
-  y:200,
   width:0,
   height:0,
   image:undefined,
@@ -299,15 +297,11 @@ function draw() {
     spaceship.width=constrain(spaceship.width,0,300);
     spaceship.height=constrain(spaceship.height,0,200);
 
-    //making spaceships apear slowly from the right side of the screen
-    spaceship.x=spaceship.x-4;
-    spaceship.x=constrain(spaceship.x,250,5000);
-
     //displaying spaceships images
-
-    spaceship(3200,200);
-    spaceship(3200,450);
-    spaceship(3200,600);
+    spaceships(200,200);
+    spaceships(200,450);
+    spaceships(200,700);
+    spaceships(200,950);
 
     //displaying the weapon that is hidden under a spaceship
     if (spaceship.width>= 450){
@@ -540,10 +534,10 @@ function displayTimer(){
 };
 
 //displaying spaceships image
-function spaceship(x,y){
-  for(let j=0, j<6 ,j++){
+function spaceships(x,y){
+  for(let j=0; j<6 ;j++){
     image(spaceship.image,x,y,spaceship.width,spaceship.height);
-    x = x+100
+    x = x + 500;
   }
 };
 
