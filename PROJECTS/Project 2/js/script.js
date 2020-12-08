@@ -304,7 +304,10 @@ function draw() {
     spaceship.x=constrain(spaceship.x,250,5000);
 
     //displaying spaceships images
-    spaceshipImage();
+
+    spaceship(3200,200);
+    spaceship(3200,450);
+    spaceship(3200,600);
 
     //displaying the weapon that is hidden under a spaceship
     if (spaceship.width>= 450){
@@ -537,36 +540,11 @@ function displayTimer(){
 };
 
 //displaying spaceships image
-function spaceshipImage(){
-  image(spaceship.image,spaceship.x,spaceship.y,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x,spaceship.y+spaceship.shift,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height);
-
-  image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height);
-
-  image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height);
-
-  image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height);
-
-  image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height);
-
-  image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height);
-  image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height);
+function spaceship(x,y){
+  for(let j=0, j<6 ,j++){
+    image(spaceship.image,x,y,spaceship.width,spaceship.height);
+    x = x+100
+  }
 };
 
 //displaying the astronaut
