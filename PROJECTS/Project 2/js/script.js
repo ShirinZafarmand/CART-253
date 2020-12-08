@@ -1,10 +1,11 @@
 "use strict";
 
 /**************************************************
-Project 2-
+Project 2 - To Infinity and Beyond
 Shirin Zafarmand
 
-
+This is a game about and astronaut that is lost in the space. This game has 4 stages in which the user must follow the instructions to win.
+Gradually the game gets tougher too. In the beginning of the each stage there is a instruction.
 **************************************************/
 let trashes=[];
 let numTrashes=50;
@@ -16,11 +17,14 @@ let amp;
 
 let bulletsFired = [];
 let targetBalloons = [];
+let bulletsNum=9
+
 let turPosX = 1600;
 let turPosY = 800;
 var onOff;
+
 let aliens=[];
-let numAliens= 7;
+let numAliens= 10;
 let x1=250;
 let x2=260;
 
@@ -33,7 +37,7 @@ let theta_vel;
 let theta_acc;
 
 let stage4Condition=7
-let stage2Condition=15
+let stage2Condition=20
 
 
 let bg={
@@ -73,21 +77,13 @@ let moon={
   movement:1,
 };
 
-let surface={
-  x:4000,
-  y:400,
-  width:400,
-  height: 100,
-  speed:-3,
-};
-
 let timer={
   x:0,
   y:0,
   width:30,
   height:2500,
   fill:255,
-  shrink:2,
+  shrink:1.15,
   state:false,
 };
 
@@ -128,7 +124,7 @@ let blackHole={
 let instruction1={
   x:0,
   y:0,
-  width:900,
+  width:1000,
   height:400,
   image:undefined,
 };
@@ -144,7 +140,7 @@ let instruction2={
 let instruction3={
   x:0,
   y:0,
-  width:900,
+  width:1000,
   height:400,
   image:undefined,
 };
@@ -195,10 +191,10 @@ function setup() {
 
   //constructiong Aliens
   for( let i=0; i <numAliens; i++){
-    let x=random(x1,x2)
-    x1=x1+100
-    x2=x2+100
-    let rotationSpeed=random(0.01,0.03)
+    let x=random(x1,x2);
+    x1=x1+100;
+    x2=x2+100;
+    let rotationSpeed=random(0.01,0.03);
     let alien = new Alien(x,rotationSpeed);
     aliens.push(alien);
   }
@@ -242,7 +238,7 @@ function draw() {
     image(moon.image,moon.x,moon.y,moon.width,moon.height);
 
     //displaying astronaut
-    astronautMovement()
+    astronautMovement();
 
     //displaying space trashes
     for( let i=0; i < trashes.length; i++){
@@ -259,12 +255,12 @@ function draw() {
 
     //if the astronaut collect 15 trashes then stage 2 instructions apear
     if(stage2Condition<1){
-      state='title2'
+      state='title2';
     }
 
     //if the astronaut doesn't collect trashes in the given time, the game is over
     else if(timer.height<=0){
-      state='gameOver'
+      state='gameOver';
     }
   }
 
@@ -289,11 +285,11 @@ function draw() {
 
     //displaying the timer that gets shorter gradually; indicating the time left for finding the weapon
     timer.state=true;
-    timer.shrink=1
+    timer.shrink=1;
     displayTimer();
 
     //displaying astronaut
-    astronautMovement()
+    astronautMovement();
 
     //making spaceships' size bigger slowly
     spaceship.width=spaceship.width+spaceship.expansion+0.25;
@@ -315,7 +311,7 @@ function draw() {
       push();
       noStroke();
       fill(weapon1.fill.r,weapon1.fill.g,weapon1.fill.b);
-      ellipse(weapon1.x,weapon1.y,weapon1.size)
+      ellipse(weapon1.x,weapon1.y,weapon1.size);
       pop();
     };
 
@@ -334,14 +330,14 @@ function draw() {
 
     //if the astronaut find the weapon then the stage 3 instructions apear
     if (d<=50){
-      state='title3'
+      state='title3';
       spaceship.x = spaceship.x - 3;
       weapon1.size=0;
     };
 
     //if the astronaut doesn't find the weapon in the given time, the game is over
     if(timer.height<=1){
-      state='gameOver'
+      state='gameOver';
     }
   }
 
@@ -367,18 +363,20 @@ function draw() {
     image(moon.image,moon.x,moon.y,moon.width,moon.height);
 
     //make the astronaut tremble from the troubling signals radiated by aliens
-    astronautTrembling()
+    astronautTrembling();
 
     //if the user doesn't kill the aliens, the astronaut explodes and the game is over
     astronautExplosion();
 
     //displaying bullets fired from the weapon
     for (var i = 0; i < bulletsFired.length; i++){
-      let bullet=bulletsFired[i]
+      let bullet=bulletsFired[i];
       //displaying bulletsFired
       bullet.display();
       //bullets moving slightly slower when fired
       bullet.update();
+      //check if the user has used all of the bullets
+      bullet.bulletQuantity();
     };
 
     //displaying aliens that rotate around the astronaut
@@ -394,7 +392,7 @@ function draw() {
     };
 
     //if the astronaut kills enough aliens then stage 3 instructions apear
-    if(stage4Condition<=1){
+    if(stage4Condition<=0){
       state ='title4';
     }
   }
@@ -450,11 +448,11 @@ function draw() {
     let level = mic.getLevel();
 
     //converting the level into the distance between the user and the blackhole
-    let movement = map( level,0,1,0,70)
-    r = r + movement
+    let movement = map( level,0,1,0,75);
+    r = r + movement;
 
     //blackhole absorbtion
-    push()
+    push();
     // Translating the origin point to the center of the screen
     translate(width / 2, height / 2);
 
@@ -463,16 +461,16 @@ function draw() {
     let y = r * sin(theta);
 
     //decreasing the distance between the astronaut and the blackhole for absorption effect
-    r = r - 0.3
+    r = r - 0.3;
 
     //shrinking astronauts size to have a diving effect
-    astronaut.width=astronaut.width-2*astronaut.shrink
-    astronaut.height=astronaut.height-astronaut.shrink
+    astronaut.width=astronaut.width-2*astronaut.shrink;
+    astronaut.height=astronaut.height-astronaut.shrink;
 
     //Draw the astronaut at the cartesian coordinate
-    astronaut.x=x
-    astronaut.y=y
-    image(astronaut.image,x,y,astronaut.width,astronaut.height)
+    astronaut.x=x;
+    astronaut.y=y;
+    image(astronaut.image,x,y,astronaut.width,astronaut.height);
 
     //Applying acceleration and velocity to angle
     theta_vel =theta_vel+ theta_acc /2;
@@ -481,14 +479,12 @@ function draw() {
     //if the blackhole sucked the astronaut, then the game is over
     if (r<= 10){
       astronaut.size=0;
-      state ='gameOver'
+      state ='gameOver';
     }
 
     //if the astronaut is far from the blackhole then survives
-    if (r>= 700){
-      background(bg.r,bg.g,bg.b);
-      fill(255);
-      text('I made it! You saved me my friend. wait... are you an alien too?.. cause your genuine help was out of this world ;) ' ,width/2,height/2);
+    if (r>= 750){
+      state ='win';
     }
   }
 
@@ -496,6 +492,13 @@ function draw() {
   else if (state==='gameOver'){
     background(bg.r,bg.g,bg.b);
     text('game over!' ,width/2,height/2);
+  }
+
+  //winning text
+  else if (state==='win'){
+    background(bg.r,bg.g,bg.b);
+    fill(255);
+    text('I made it! You saved me my friend. wait... are you an alien too?.. cause your genuine help was out of this world ;) ' ,width/2,height/2);
   }
 }
 
@@ -535,35 +538,35 @@ function displayTimer(){
 
 //displaying spaceships image
 function spaceshipImage(){
-  image(spaceship.image,spaceship.x,spaceship.y,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+  image(spaceship.image,spaceship.x,spaceship.y,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x,spaceship.y+spaceship.shift,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height);
 
-  image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+  image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height);
 
-  image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+  image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+2*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height);
 
-  image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+  image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+3*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height);
 
-  image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+  image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+4*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height);
 
-  image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height)
-  image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height)
+  image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+spaceship.shift/2,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+spaceship.shift,spaceship.width,spaceship.height);
+  image(spaceship.image,spaceship.x+5*spaceship.shift,spaceship.y+1.5*spaceship.shift,spaceship.width,spaceship.height);
 };
 
 //displaying the astronaut
@@ -620,6 +623,7 @@ function astronautMovement(){
     function mousePressed(){
       let mouseVector = getMouseVector();
       let oneBullet = new bullet(mouseVector.x, mouseVector.y);
+      bulletsNum=bulletsNum-1;
       bulletsFired.push(oneBullet);
     };
 
@@ -638,12 +642,12 @@ function astronautMovement(){
       if(onOff==true){
         translate(random(-astronaut.tremble,astronaut.tremble),random(-astronaut.tremble,astronaut.tremble));
       }
-      astronaut.tremble=astronaut.tremble+0.01
+      astronaut.tremble=astronaut.tremble+0.01;
       if (astronaut.state=true){
         //displaying astronaut
         imageMode(CENTER);
-        astronaut.x=width/2
-        astronaut.y=height/2
+        astronaut.x=width/2;
+        astronaut.y=height/2;
         image(astronaut.image,astronaut.x,astronaut.y,astronaut.width,astronaut.height);
       }
 

@@ -1,5 +1,5 @@
 class bullet{
-  
+
   constructor(xSpd, ySpd){
     this.x = turPosX;
     this.y = turPosY;
@@ -24,4 +24,11 @@ class bullet{
     this.xSpd *= 0.994;
     this.ySpd *= 0.994;
   };
+
+  bulletQuantity(){
+    //if the user has used all of the bullets the game is over
+    if(bulletsNum<=0){
+      state='gameOver'
+    }
+  }
 }

@@ -1,7 +1,7 @@
 "use strict";
 
 /**************************************************
-Project 2-
+Project 2
 Shirin Zafarmand
 
 
@@ -71,14 +71,6 @@ let moon={
   height:1500,
   image:undefined,
   movement:1,
-};
-
-let surface={
-  x:4000,
-  y:400,
-  width:400,
-  height: 100,
-  speed:-3,
 };
 
 let timer={

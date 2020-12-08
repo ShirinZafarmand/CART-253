@@ -2,14 +2,14 @@ class Alien{
 
   constructor(x,rotationSpeed){
     //Aliens
-      this.x=x;
-      this.y=0;
-      this.size=70;
-      this.r=14;
-      this.g=0;
-      this.b=65;
-      this.angle=0;
-      this.rotationSpeed= rotationSpeed;
+    this.x=x;
+    this.y=0;
+    this.size=70;
+    this.r=14;
+    this.g=0;
+    this.b=65;
+    this.angle=0;
+    this.rotationSpeed= rotationSpeed;
   };
 
 
@@ -38,7 +38,7 @@ class Alien{
     let alienActualY = height / 2 + alienDistanceFromCentre * sin(this.angle);
 
     // Check if the bullet has attacked the alien
-    if (dist(bullet.x, bullet.y, alienActualX, alienActualY) < this.size) {
+    if (dist(bullet.x, bullet.y, alienActualX, alienActualY) < this.size && this.size!=0) {
       this.size=0;
       stage4Condition=stage4Condition-1;
     }
